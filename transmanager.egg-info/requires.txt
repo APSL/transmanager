@@ -1,0 +1,6 @@
+django
+django-filter
+django-hvad
+django-rq
+xlsxwriter
+xlrd
