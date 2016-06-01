@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% load compress i18n static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmylandCMS - Translations Manager - {% block title %}{% endblock title %}</title>
+    <link href='//fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="{% static 'cms/img/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'cms/img/favicon.ico' %}" type="image/x-icon">
+    {% compress css %}
+        <link rel="stylesheet" href="{% static 'transmanager/bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.min.css' %}" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="{% static 'transmanager/bower_components/bootstrap/dist/css/bootstrap.min.css' %}" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="{% static 'transmanager/chosen/chosen.min.css' %}" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="{% static 'transmanager/css/transmanager.css' %}" type="text/css" media="screen"/>
+        {% block extracss %}{% endblock extracss %}
+    {% endcompress css %}
+</head>
+
+<body {% block body_id %}{% endblock body_id %}>
+{% block container %}{% endblock container %}
+{% compress js %}
+    <script type="text/javascript" src="{% static 'transmanager/bower_components/jquery/dist/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'transmanager/bower_components/wysihtml5x/dist/wysihtml5x-toolbar.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'transmanager/bower_components/handlebars/handlebars.runtime.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'transmanager/bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'transmanager/chosen/chosen.jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'transmanager/js/main.js' %}"></script>
+    {% block extrajs %}{% endblock extrajs %}
+{% endcompress js %}
+{% block extrajs2 %}{% endblock extrajs2 %}
+</body>
+</html>

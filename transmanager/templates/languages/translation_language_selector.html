@@ -1,0 +1,54 @@
+{% load i18n static %}
+<link rel="stylesheet" href="{% static 'transmanager/css/translation_language_selector.css' %}" type="text/css"/>
+<script type="text/javascript" src="{% static 'transmanager/js/transmanager.js' %}"></script>
+<div id="transmanager-api-menu" class="dropdown" data-api-url="{{ api_url }}" data-app-label="{{ app_label }}"
+     data-model="{{ model }}" data-pk="{{ object_pk }}">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">{% trans 'Traducciones' %}
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenu2">
+        {% if item_languages %}
+            <li>
+                <table id="item-languages">
+                    <tr>
+                        <td><strong>{% trans 'Idiomas por defecto' %}</strong></td>
+                        {% for item in item_languages %}
+                            <td{% if item.from_model %} class="from-model"{% endif %}>
+                                <input id="translation_language_remove_{{ item.lang.code }}" type="checkbox"
+                                       name="translate_remove[]" value="{{ item.lang.code }}"/>
+                                <label for="translation_language_remove_{{ item.lang.code }}">{{ item.lang.name }}</label>
+                            </td>
+                        {% endfor %}
+                        <td>
+                            <button id="btn-transmanager-api-menu-remove"
+                                    class="btn btn-primary btn-xs">{% trans 'Eliminar' %}</button>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+        {% endif %}
+        {% if more_languages and item_languages %}
+            <li role="separator" class="divider"></li>
+        {% endif %}
+        {% if more_languages %}
+            <li>
+                <table id="more-languages">
+                    <tr>
+                        <td><strong>{% trans 'Pedir traducción en' %}:</strong></td>
+                        {% for item in more_languages %}
+                            <td{% if item.from_model %} class="from-model"{% endif %}>
+                                <input id="translation_language_{{ item.lang.code }}" type="checkbox" name="translate[]"
+                                       value="{{ item.lang.code }}"/>
+                                <label for="translation_language_{{ item.lang.code }}">{{ item.lang.name }}</label>
+                            </td>
+                        {% endfor %}
+                        <td>
+                            <button id="btn-transmanager-api-menu" class="btn btn-primary btn-xs">{% trans 'Enviar' %}</button>
+                        </td>
+                    </tr>
+                </table>
+            </li>
+        {% endif %}
+    </ul>
+</div>

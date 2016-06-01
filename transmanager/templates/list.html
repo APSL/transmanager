@@ -1,0 +1,64 @@
+{% extends view.extends|default:'dashboard.html' %}
+{% load i18n static humanize %}
+
+{% block extracss %}
+    <link rel="stylesheet" href="{% static 'transmanager/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.min.css' %}" type="text/css" />
+{% endblock extracss %}
+
+{% block extrajs %}
+    <script type="text/javascript" src="{% static 'transmanager/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'transmanager/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js' %}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{% static 'transmanager/js/translated-list.js' %}"></script>
+{% endblock extrajs %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'transmanager/css/transmanager.css' %}" type="text/css" media="screen"/>
+    <form class="filter" method="get" action="{% url 'transmanager-task-list' %}">
+        {% csrf_token %}
+        {{ filter.form.as_p }}
+        <div class="buttons pull-right">
+            <input name="filter" id="filter-button" class="btn btn-success" type="submit" value="{% trans 'Filtrar' %}" />
+            <input name="reset" id="reset-button" class="btn btn-warning reset-filters" type="reset" value="{% trans 'Reset' %}" />
+            <input name="export" id="reset-button" class="btn btn-link" type="submit" value="{% trans 'Exportar' %}" />
+        </div>
+    </form>
+    <div style="clear:both;">
+        <div class="text-muted pull-right">{% trans 'Total palabras' %} <strong>{{ words.number|default:0|intcomma }}</strong></div>
+        <div class="text-muted">{% trans 'Total tareas' %} <strong>{{ total|intcomma }}</strong></div>
+    </div>
+    <table class="table table-bordered table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>{% trans 'Usuario' %}</th>
+                <th>{% trans 'Idioma' %}</th>
+                <th>{% trans 'Nombre objeto' %}</th>
+                <th>{% trans 'Clave' %}</th>
+                <th>{% trans 'Campo' %}</th>
+                <th>{% trans 'Nº palabras' %}</th>
+                <th>{% trans 'Creacion' %}</th>
+                <th>{% trans 'Modificacion' %}</th>
+                <th>{% trans 'Hecho' %}</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+                <tr>
+                    <td>{{ item.user }}</td>
+                    <td>{{ item.language }}</td>
+                    <td>{{ item.object_name }}</td>
+                    <td>{{ item.object_pk }}</td>
+                    <td>{{ item.object_field_label }}</td>
+                    <td>{{ item.number_of_words|intcomma }}</td>
+                    <td>{{ item.date_creation|date:'d-m-Y h:i' }}</td>
+                    <td>{{ item.date_modification|date:'d-m-Y h:i' }}</td>
+                    <td>{{ item.done|yesno:"Si,No" }}</td>
+                    <td><a href="{% url 'transmanager-task-detail' item.id%}?{{ request.GET.urlencode }}">{% trans 'Editar' %}</a></td>
+                </tr>
+            {% empty %}
+                No items
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include 'cms/generic/paginator.html' %}
+{% endblock %}

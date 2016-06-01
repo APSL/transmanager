@@ -1,0 +1,9 @@
+{% load i18n %}
+<nav class="masteroptions">
+    {% for option in menu %}
+        <a href="{% url option.url %}" class="btn btn-default">
+            <i class="{{ option.icon }}"></i>
+            {{ option.name }}
+        </a>
+    {% endfor %}
+</nav>

@@ -1,0 +1,57 @@
+#transmanager-api-menu {
+    float: right;
+    width: 730px;
+    padding-left: 38px;
+    /*height: 1%;*/
+    position:absolute;
+    right:15px;
+    z-index: 20;
+}
+
+#transmanager-api-menu button {
+    text-align: center;
+    float: right;
+}
+
+#transmanager-api-menu ul li {
+    padding: 5px 10px 5px 10px;
+}
+
+#transmanager-api-menu ul li label {
+    font-weight: normal;
+    padding:0;
+    margin-bottom: 0;
+}
+
+#transmanager-api-menu ul li.divider {
+    padding: 0;
+}
+
+#transmanager-api-menu ul li.button-dropdown {
+    padding: 0;
+    text-align: center;
+}
+
+#transmanager-api-menu ul li table, #transmanager-api-menu ul li table td {
+    border: 1px solid #CCCCCC;
+    border-collapse: collapse;
+}
+#transmanager-api-menu ul li table {
+    width:100%
+}
+#transmanager-api-menu ul li table td {
+    padding: 5px;
+    text-align: center;
+}
+#transmanager-api-menu ul li table td.from-model {
+    background: #eee;
+}
+
+/*#transmanager-api-menu #btn-transmanager-api-menu {*/
+    /*margin-right: 10px;*/
+/*}*/
+
+#transmanager-api-menu  ul.dropdown-menu.dropdown-menu-left {
+    width:100%;
+}
+

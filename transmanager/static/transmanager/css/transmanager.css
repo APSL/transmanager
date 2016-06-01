@@ -1,0 +1,72 @@
+.masteroptions {
+    float: left;
+    margin-top: 7px;
+    margin-left: 3px;
+    margin-right: 10%;
+}
+.masteroptions a {
+    font-size:11px;
+    padding: 2px;
+    display: inline-block;
+    min-width: 60px;
+    margin-bottom: 10px;
+    padding: 5px 2px;
+    text-align: center;
+}
+.masteroptions a i{
+    display: block;
+}
+
+/* detail */
+#task-form {
+    float: none;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+#task-form label {
+    display: block;
+}
+
+#task-form p span {
+    display: block;
+}
+
+#task-form select, #task-form input[type=text], #task-form textarea {
+    width: 100%;
+}
+
+form.filter {
+    /*position: relative;*/
+    /*overflow: hidden;*/
+}
+
+/* list */
+form.filter {
+    margin: 0 0 20px 0;
+    /*overflow: hidden;*/
+    min-height: 45px;
+}
+
+form.filter input.btn {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+form.filter p {
+    float: left;
+    margin-right: 20px;
+}
+
+form.filter p div {
+    margin: 0 0 0 10px;
+}
+
+form.filter p span.helptext {
+    display: none;
+}
+
+.navbar-brand img {
+    width:75px;
+}
+

@@ -1,0 +1,332 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-03-02 16:21+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps.py:16
+msgid "Gestor de traducciones"
+msgstr ""
+
+#: filters/filters.py:15 filters/filters.py:21
+msgid "Todos"
+msgstr ""
+
+#: filters/filters.py:16
+msgid "Modificados"
+msgstr ""
+
+#: filters/filters.py:17
+msgid "No modificados"
+msgstr ""
+
+#: filters/filters.py:22
+msgid "Traducidos"
+msgstr ""
+
+#: filters/filters.py:23
+msgid "No traducidos"
+msgstr ""
+
+#: filters/filters.py:27 models.py:48 models.py:72 templates/list.html:32
+msgid "Usuario"
+msgstr ""
+
+#: filters/filters.py:29 models.py:76
+msgid "Clase"
+msgstr ""
+
+#: filters/filters.py:32 models.py:25 models.py:74 templates/list.html:33
+#: templates/notification/body.html:16
+msgid "Idioma"
+msgstr ""
+
+#: filters/filters.py:34
+msgid "Estado"
+msgstr ""
+
+#: filters/filters.py:36
+msgid "Tipo registro"
+msgstr ""
+
+#: filters/filters.py:38 templates/list.html:36
+#: templates/notification/body.html:19
+msgid "Campo"
+msgstr ""
+
+#: filters/filters.py:40 models.py:79 templates/list.html:35
+#: templates/notification/body.html:18
+msgid "Clave"
+msgstr ""
+
+#: filters/filters.py:42
+msgid "Rango de fechas"
+msgstr ""
+
+#: filters/filters.py:123
+msgid "Todas las clases"
+msgstr ""
+
+#: filters/filters.py:153
+msgid "Todos los campos"
+msgstr ""
+
+#: models.py:19
+msgid "Código"
+msgstr ""
+
+#: models.py:19
+msgid "Código ISO del idioma"
+msgstr ""
+
+#: models.py:20
+msgid "Nombre"
+msgstr ""
+
+#: models.py:21
+msgid "Idioma principal"
+msgstr ""
+
+#: models.py:22
+msgid "¿Es el idioma principal?"
+msgstr ""
+
+#: models.py:26 models.py:49 models.py:66 models.py:148 models.py:160
+#: models.py:166 models.py:178
+msgid "Idiomas"
+msgstr ""
+
+#: models.py:50 models.py:57
+msgid "Activo"
+msgstr ""
+
+#: models.py:53
+msgid "Traductor"
+msgstr ""
+
+#: models.py:54
+msgid "Traductores"
+msgstr ""
+
+#: models.py:57
+msgid "No activo"
+msgstr ""
+
+#: models.py:77
+msgid "Clase del objeto"
+msgstr ""
+
+#: models.py:80
+msgid "Clave primária del objeto"
+msgstr ""
+
+#: models.py:82
+msgid "Fecha creación"
+msgstr ""
+
+#: models.py:84
+msgid "Fecha modificación"
+msgstr ""
+
+#: models.py:86
+msgid "Notificada"
+msgstr ""
+
+#: models.py:87
+msgid "Si la tarea ya ha sido notificada o no al usuario"
+msgstr ""
+
+#: models.py:89
+msgid "Fecha notificacion"
+msgstr ""
+
+#: models.py:92 templates/list.html:34
+msgid "Nombre objeto"
+msgstr ""
+
+#: models.py:93
+msgid "Nombre campo"
+msgstr ""
+
+#: models.py:94
+msgid "Nombre del atributo en el modelo"
+msgstr ""
+
+#: models.py:95
+msgid "Descripción campo"
+msgstr ""
+
+#: models.py:96
+msgid "Etiqueta del campo"
+msgstr ""
+
+#: models.py:97
+msgid "Valor"
+msgstr ""
+
+#: models.py:98
+msgid "Valor del campo en el idioma principal"
+msgstr ""
+
+#: models.py:100
+msgid "Valor traducido"
+msgstr ""
+
+#: models.py:101
+msgid "Valor traducido del campo en el idioma principal"
+msgstr ""
+
+#: models.py:103
+msgid "Número palabras"
+msgstr ""
+
+#: models.py:104
+msgid "Número de palabras a traducir en el idioma original"
+msgstr ""
+
+#: models.py:106 templates/list.html:40
+msgid "Hecho"
+msgstr ""
+
+#: models.py:109
+msgid "Tarea"
+msgstr ""
+
+#: models.py:110
+msgid "Tareas"
+msgstr ""
+
+#: models.py:147
+msgid "Aplicación"
+msgstr ""
+
+#: models.py:149
+msgid "Idiomas por defecto de la aplicación"
+msgstr ""
+
+#: models.py:152
+msgid "Idiomas por aplicación"
+msgstr ""
+
+#: models.py:153
+msgid "Idiomas por aplicaciones"
+msgstr ""
+
+#: models.py:165
+msgid "Model"
+msgstr ""
+
+#: models.py:167
+msgid "Idiomas por defecto del modelo"
+msgstr ""
+
+#: models.py:170
+msgid "Idiomas por modelo"
+msgstr ""
+
+#: models.py:171
+msgid "Idiomas por modelos"
+msgstr ""
+
+#: serializers.py:35
+msgid "No se han especificado códigos de idioma"
+msgstr ""
+
+#: serializers.py:37
+msgid "No se han especificado códigos de item"
+msgstr ""
+
+#: serializers.py:40
+msgid "El Content Type no existe"
+msgstr ""
+
+#: templates/dashboard.html:40
+msgid "Salir"
+msgstr ""
+
+#: templates/detail.html:15
+msgid "Volver al listado"
+msgstr ""
+
+#: templates/detail.html:16
+msgid "Guardar"
+msgstr ""
+
+#: templates/languages/translation_language_selector.html:7
+msgid "Traducciones"
+msgstr ""
+
+#: templates/languages/translation_language_selector.html:18
+msgid "Enviar"
+msgstr ""
+
+#: templates/list.html:20
+msgid "Filtrar"
+msgstr ""
+
+#: templates/list.html:21
+msgid "Reset"
+msgstr ""
+
+#: templates/list.html:22
+msgid "Exportar"
+msgstr ""
+
+#: templates/list.html:26
+msgid "Total palabras"
+msgstr ""
+
+#: templates/list.html:27
+msgid "Total tareas"
+msgstr ""
+
+#: templates/list.html:37
+msgid "Nº palabras"
+msgstr ""
+
+#: templates/list.html:38
+msgid "Creacion"
+msgstr ""
+
+#: templates/list.html:39
+msgid "Modificacion"
+msgstr ""
+
+#: templates/list.html:56 templates/notification/body.html:31
+msgid "Editar"
+msgstr ""
+
+#: templates/notification/body.html:7 templates/notification/body.html:10
+#: templates/notification/subject.txt:2
+msgid "Notification for translation pending tasks"
+msgstr ""
+
+#: templates/notification/body.html:11
+msgid "Para"
+msgstr ""
+
+#: templates/notification/body.html:17
+msgid "Modelo"
+msgstr ""
+
+#: templates/notification/body.html:36
+msgid "Ir al listado de tareas pendientes"
+msgstr ""
+
+#: templatetags/transmanager_tags.py:104
+msgid "Tareas pendiente traducción"
+msgstr ""

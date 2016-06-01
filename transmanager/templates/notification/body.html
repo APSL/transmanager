@@ -1,0 +1,38 @@
+{% load i18n %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>[TRANSMANAGER] - {% trans 'Notificación de tareas pendientes de traducción' %}</title>
+</head>
+<body>
+    <h3>[TRANSMANAGER] - {% trans 'Notificación de tareas pendientes de traducción' %}</h3>
+    <p>{% trans 'Para' %}: {{ user.user.first_name }} {{ user.user.last_name }} ({{ user.user.email }})</p>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>{% trans 'Idioma' %}</th>
+                <th>{% trans 'Modelo' %}</th>
+                <th>{% trans 'Clave' %}</th>
+                <th>{% trans 'Campo' %}</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ task.language }}</td>
+                <td>{{ task.object_name }}</td>
+                <td>{{ task.object_pk }}</td>
+                <td>{{ task.object_field_label }}</td>
+                <td><a href="{% url 'transmanager-task-detail' task.id %}">{% trans 'Editar' %}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><a href="{% url 'transmanager-task-list' %}">{% trans 'Ir al listado de tareas pendientes' %}</a></p>
+</body>
+</html>
