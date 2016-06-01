@@ -1,11 +1,9 @@
 # Created by .ignore support plugin (hsz.mobi)
-
 .idea
 __pycache__/
 *.py[cod]
-
 docs/_build
 docs/_static
 docs/_templates
-
 transmanager.egg-info/
+dist/
