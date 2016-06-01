@@ -27,7 +27,7 @@ setup(
     long_description=README,
     url='https://github.com/APSL/transmanager',
     author='Andreu Vallbona',
-    author_email='avallbona@apsl.net',
+    author_email='avallbona@gmail.com',
     install_requires=install_requires,
     classifiers=[
         'Environment :: Web Environment',

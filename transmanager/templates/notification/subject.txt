@@ -1,2 +1,2 @@
 {% load i18n %}
-[SMYLAND] - {% trans 'Notificación de tareas pendientes de traducción' %} - {{ user.user.first_name }} {{ user.user.last_name }} - {{ user.user.email }}
+[TRANSMANAGER] - {% trans 'Notificación de tareas pendientes de traducción' %} - {{ user.user.first_name }} {{ user.user.last_name }} - {{ user.user.email }}
