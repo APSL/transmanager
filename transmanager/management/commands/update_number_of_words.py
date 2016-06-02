@@ -9,7 +9,7 @@ from ...utils import get_num_words
 
 
 class Command(BaseCommand):
-    help = "Update the number of words of the tasks"
+    help = "Update the number of words to translate in every task"
 
     queue = Queue()
     num_threads = 80

@@ -1,6 +1,5 @@
-************
 How it works
-************
+============
 TransManager its based on the handling pre_save django signal. This allow to detect the changes done in
 the translatable fields of a model.
 

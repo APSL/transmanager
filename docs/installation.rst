@@ -11,3 +11,5 @@ Then you've to append :code:`transmanager` to :code:`INSTALLED_APPS` in your set
         'transmanager'
     )
 
+
+
