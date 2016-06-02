@@ -14,8 +14,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{% url 'index' %}">
-                        <img src="{% static 'cms/img/logo.png' %}" class="" alt="">
+
+                    {%  get_logo_url as logo_url%}
+
+                    <a class="navbar-brand" href="{% url 'index' %}" style="background: url({{ logo_url }}) left top no-repeat;">
+{#                        <img src="{% static 'cms/img/logo.png' %}" class="" alt="">#}
+{#                        <img src="{% static logo_url %}" class="" alt="">#}
                     </a>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->

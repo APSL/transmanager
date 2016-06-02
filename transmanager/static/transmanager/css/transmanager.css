@@ -36,15 +36,9 @@
     width: 100%;
 }
 
-form.filter {
-    /*position: relative;*/
-    /*overflow: hidden;*/
-}
-
 /* list */
 form.filter {
     margin: 0 0 20px 0;
-    /*overflow: hidden;*/
     min-height: 45px;
 }
 
@@ -66,7 +60,10 @@ form.filter p span.helptext {
     display: none;
 }
 
-.navbar-brand img {
-    width:75px;
+a.navbar-brand {
+    display: block;
+    width:200px;
+    height: 55px;
+    /*background: url(../img/logo.png) 0 -50px no-repeat;*/
+    padding:10px;
 }
-

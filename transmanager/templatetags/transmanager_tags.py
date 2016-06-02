@@ -6,7 +6,7 @@ from django import template
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from transmanager.models import TransLanguage
-from transmanager.settings import TM_API_URL
+from transmanager.settings import TM_API_URL, TM_BRAND_LOGO_URL
 
 register = template.Library()
 
@@ -62,3 +62,8 @@ def get_main_menu():
     ]
 
     return render_to_string('menu/main_menu.html', {'menu': menu})
+
+
+@register.assignment_tag()
+def get_logo_url():
+    return '/static/{}'.format(TM_BRAND_LOGO_URL)

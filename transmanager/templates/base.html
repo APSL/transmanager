@@ -7,8 +7,11 @@
     <title>Translations Manager - {% block title %}{% endblock title %}</title>
     <link href='//fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="shortcut icon" href="{% static 'cms/img/favicon.ico' %}" type="image/x-icon">
-    <link rel="icon" href="{% static 'cms/img/favicon.ico' %}" type="image/x-icon">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'transmanager/img/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'transmanager/img/favicon-96x96.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'transmanager/img/favicon-16x16.png' %}">
+
     {% compress css %}
         <link rel="stylesheet" href="{% static 'transmanager/bower_components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.min.css' %}" type="text/css" media="screen"/>
         <link rel="stylesheet" href="{% static 'transmanager/bower_components/bootstrap/dist/css/bootstrap.min.css' %}" type="text/css" media="screen"/>

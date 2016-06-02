@@ -1,0 +1,4 @@
+{% load bootstrap_pagination %}
+{% if page_obj.paginator.num_pages > 1 %}
+    {% bootstrap_paginate page_obj range=10 %}
+{% endif %}
