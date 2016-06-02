@@ -10,14 +10,14 @@ an user assigned. An user can have more than one languages assigned. If there is
 the translations tasks will not be created.
 
 
-Creation of new registry
+Creation of new record
+----------------------
+When a new record is created we create a new translation task for every translatable not empty field in
+every language configured for the model we're the new record.
+
+
+Modification of a record
 ------------------------
-When a new registry is created we create a new translation task for every translatable not empty field in
-every language configured for the model we're the new registry.
-
-
-Modification of a registry
---------------------------
 When we modify a register, we will create a translation task for every modified translatable field
 in the original language.
 
@@ -28,3 +28,4 @@ Once the tasks are created they have to be translated. When we translate the tas
 language original text as reference in the edition form, at the moment of saving the task the main
 object will be updated. This way it have the advantage that the translator user does not have to have
 access to the main content models, avoiding undesired deletions or modifications on these main models.
+

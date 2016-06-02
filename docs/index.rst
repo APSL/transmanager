@@ -14,7 +14,9 @@ It handles the translations tasks of the translatable fields.
 
    how_it_works
    installation
+   settings
    commands
+
 
 
 
