@@ -6,22 +6,15 @@
 Welcome to TransManager's documentation!
 ========================================
 
-Contents:
+TransManager is a Django app that deals with the translation tasks of the
+`django-hvad <https://github.com/kristianoellegaard/django-hvad>`_ based models.
+It handles the translations tasks of the translatable fields.
 
 .. toctree::
 
+   how_it_works
    installation
+   commands
 
 
-
-   :maxdepth: 2
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
