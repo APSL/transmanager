@@ -10,7 +10,9 @@ install_requires = [
     'django-hvad',
     'django-rq',
     'xlsxwriter',
-    'xlrd'
+    'xlrd',
+    'djangorestframework',
+    'django-yubin'
 ]
 
 

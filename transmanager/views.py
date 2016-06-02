@@ -12,7 +12,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from api2.weblogitravel.views import BaseViewMixin
 from transmanager.export import ExportQueryset
 from transmanager.serializers import TaskBulksSerializer
 from .models import TransTask
@@ -86,7 +85,9 @@ class TaskDetailView(AuthenticationMixin, UpdateView):
         return initial
 
 
-class TaskBulksView(BaseViewMixin, APIView):
+#  @todo resolve permission to post/delete to the API
+# class TaskBulksView(AuthenticationMixin, APIView):
+class TaskBulksView(APIView):
 
     """
     Handles the bulk addtion of translation tasks

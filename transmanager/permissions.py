@@ -15,22 +15,6 @@ class AuthenticationMixin(object):
     """
     translator_user = None
 
-    # def dispatch(self, request, *args, **kwargs):
-    #
-    #     if request.user.is_superuser:
-    #         authorized = True
-    #     else:
-    #         try:
-    #             self.translator_user = request.user.translator_user
-    #             authorized = True
-    #         except ObjectDoesNotExist:
-    #             authorized = False
-    #
-    #     if not authorized:
-    #         return redirect(reverse_lazy('index'))
-    #
-    #     return super(AuthenticationMixin, self).dispatch(request, *args, **kwargs)
-
     def dispatch(self, request, *args, **kwargs):
 
         if request.user.is_superuser:
