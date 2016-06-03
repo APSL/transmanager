@@ -8,6 +8,8 @@ from django.template.loader import render_to_string
 from transmanager.models import TransLanguage
 from transmanager.settings import TM_API_URL, TM_BRAND_LOGO_URL
 
+from django.conf import settings
+
 register = template.Library()
 
 
@@ -66,4 +68,4 @@ def get_main_menu():
 
 @register.assignment_tag()
 def get_logo_url():
-    return '/static/{}'.format(TM_BRAND_LOGO_URL)
+    return '{}{}'.format(settings.STATIC_URL, TM_BRAND_LOGO_URL)
