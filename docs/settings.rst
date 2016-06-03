@@ -21,7 +21,6 @@ TM_API_URL
 Url of the API of **TransManager**. Default ``'/transmanager/api/task/'``.
 
 
-
 TM_BRAND_LOGO_URL
 -----------------
 Url of logo with which you can "brand" the list and edit tasks pages.
