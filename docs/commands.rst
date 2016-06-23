@@ -33,3 +33,4 @@ Update number of words
 Update the number of words to translate in every task. It counts the number of words of the original text to translate.
 
 :code:`python manage.py update_number_of_words`
+

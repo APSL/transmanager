@@ -12,12 +12,11 @@ It handles the translations tasks of the translatable fields.
 
 .. toctree::
 
-   how_it_works
    installation
+   how_it_works
    settings
    commands
-
-
-
-
-
+   users
+   child_models
+   enable_disable_translations
+   template_tags

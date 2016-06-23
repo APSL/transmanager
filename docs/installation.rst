@@ -22,3 +22,5 @@ If you install **TransManager** in an app with already existing data, you can us
 command in order to generate the translations tasks.
 
 :code:`python manage.py generate_tasks`
+
+
