@@ -28,3 +28,6 @@ Quick start
 5.  Start updating your models content and you'll see the translation tasks appear.
 
 
+Documentation
+-------------
+Visit the `documentation <http://transmanager.readthedocs.io/en/latest/>`_ for an in-depth look at TransManager.
