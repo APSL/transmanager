@@ -17,6 +17,4 @@ It handles the translations tasks of the translatable fields.
    settings
    commands
    users
-   child_models
-   enable_disable_translations
    template_tags

@@ -15,7 +15,7 @@ TM_DEFAULT_ENABLED_ATTRIBUTE_NAME
 ---------------------------------
 The name of the attribute that we have to watch in order to know if the record of the main model is enabled or not.
 Watching the state of this field we order to generate or delete the translations of the main model record.
-Default ``'enabled'``.
+Default ``'enabled'``. See the :ref:`enabling_disabling` section.
 
 
 TM_API_URL

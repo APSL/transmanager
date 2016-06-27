@@ -10,6 +10,9 @@ Generate the translation tasks from the existing data. It's useful if we have in
 
 :code:`python manage.py generate_tasks`
 
+Because there may be lots of translations tasks to generate, the process is called asyncronously,
+via the python-rq workers.
+
 
 Delete orphan tasks
 -------------------

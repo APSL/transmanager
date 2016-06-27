@@ -1,7 +1,11 @@
 Users
 =====
 You have to create users that will make the translation work. At least there must be
-a user created for each language. A user can handle more than one language, although
+a user created for each language.
+
+.. image:: images/capture_add_user.png
+
+A user can handle more than one language, although
 normally there is one user per language.
 
 Each time a translation task is generated it will be assigned to the user
