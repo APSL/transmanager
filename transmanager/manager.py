@@ -441,6 +441,7 @@ class Manager(object):
 
                 if object_field_value == '' or object_field_value is None:
                     continue
+
                 for lang in languages:
                     # for every language
                     self.log('parsing lang: {}'.format(lang))
@@ -495,8 +496,22 @@ class Manager(object):
                             result.append(task)
                         except TransTask.MultipleObjectsReturned:
                             # theorically it should not occur but if so delete the repeated tasks
-                            TransTask.objects.filter(object_class=ob_class_name, object_pk=item.pk, object_field=field,
-                                                     language=language, user=user)[1:].delete()
+                            tasks = TransTask.objects.filter(
+                                content_type=ct,
+                                object_class=ob_class_name,
+                                object_pk=item.pk,
+                                object_field=field,
+                                language=language,
+                                user=user
+                            )
+                            for i, task in enumerate(tasks):
+                                if i == 0:
+                                    task.date_modification = datetime.now()
+                                    task.object_field_value = object_field_value
+                                    task.done = False
+                                    task.save()
+                                else:
+                                    task.delete()
 
         # we return every task (created or modified)
         return result
