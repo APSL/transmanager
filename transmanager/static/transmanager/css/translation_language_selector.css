@@ -1,11 +1,16 @@
 #transmanager-api-menu {
-    float: right;
-    width: 730px;
-    padding-left: 38px;
+    /*width: 730px;*/
     /*height: 1%;*/
+    float: right;
+    padding-left: 38px;
     position:absolute;
     right:15px;
     z-index: 20;
+}
+
+
+#transmanager-api-menu.dropdown.open {
+    width: 730px;
 }
 
 #transmanager-api-menu button {

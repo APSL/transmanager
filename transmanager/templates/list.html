@@ -1,5 +1,6 @@
 {% extends view.extends|default:'dashboard.html' %}
 {% load i18n static humanize %}
+{% load render_table from django_tables2 %}
 
 {% block extracss %}
     <link rel="stylesheet" href="{% static 'transmanager/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.min.css' %}" type="text/css" />
@@ -26,39 +27,7 @@
         <div class="text-muted pull-right">{% trans 'Total palabras' %} <strong>{{ words.number|default:0|intcomma }}</strong></div>
         <div class="text-muted">{% trans 'Total tareas' %} <strong>{{ total|intcomma }}</strong></div>
     </div>
-    <table class="table table-bordered table-hover table-condensed">
-        <thead>
-            <tr>
-                <th>{% trans 'Usuario' %}</th>
-                <th>{% trans 'Idioma' %}</th>
-                <th>{% trans 'Nombre objeto' %}</th>
-                <th>{% trans 'Clave' %}</th>
-                <th>{% trans 'Campo' %}</th>
-                <th>{% trans 'Nº palabras' %}</th>
-                <th>{% trans 'Creacion' %}</th>
-                <th>{% trans 'Modificacion' %}</th>
-                <th>{% trans 'Hecho' %}</th>
-                <th>&nbsp;</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in object_list %}
-                <tr>
-                    <td>{{ item.user }}</td>
-                    <td>{{ item.language }}</td>
-                    <td>{{ item.object_name }}</td>
-                    <td>{{ item.object_pk }}</td>
-                    <td>{{ item.object_field_label }}</td>
-                    <td>{{ item.number_of_words|intcomma }}</td>
-                    <td>{{ item.date_creation|date:'d-m-Y h:i' }}</td>
-                    <td>{{ item.date_modification|date:'d-m-Y h:i' }}</td>
-                    <td>{{ item.done|yesno:"Si,No" }}</td>
-                    <td><a href="{% url 'transmanager-task-detail' item.id%}?{{ request.GET.urlencode }}">{% trans 'Editar' %}</a></td>
-                </tr>
-            {% empty %}
-                No items
-            {% endfor %}
-        </tbody>
-    </table>
-    {% include 'paginator.html' %}
+
+    {% render_table table %}
+
 {% endblock %}

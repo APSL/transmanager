@@ -34,3 +34,4 @@ watchdog==0.8.3
 xlrd==0.9.4
 XlsxWriter==0.8.9
 django-bootstrap-pagination==1.5.1
+django-tables2==1.2.3

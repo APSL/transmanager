@@ -29,4 +29,9 @@ Url of logo with which you can "brand" the list and edit tasks pages.
 Default ``'transmanager/img/logo.png'``.
 
 
+TM_ORIGINAL_VALUE_CHARS_NUMBER
+------------------------------
+Number of chars that we want to show from the value to translate in the translation task list. Default ``100``.
+
+
 

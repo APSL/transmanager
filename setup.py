@@ -4,18 +4,6 @@ from setuptools import find_packages, setup
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     README = readme.read()
 
-install_requires = [
-    'django',
-    'django-filter',
-    'django-hvad',
-    'django-rq',
-    'xlsxwriter',
-    'xlrd',
-    'djangorestframework',
-    'django-yubin'
-]
-
-
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
@@ -30,7 +18,17 @@ setup(
     url='https://github.com/APSL/transmanager',
     author='Andreu Vallbona',
     author_email='avallbona@gmail.com',
-    install_requires=install_requires,
+    install_requires=[
+        'django',
+        'django-filter',
+        'django-hvad',
+        'django-rq',
+        'xlsxwriter',
+        'xlrd',
+        'djangorestframework',
+        'django-yubin',
+        'django-tables2',
+    ],
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',

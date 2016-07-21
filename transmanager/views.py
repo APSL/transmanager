@@ -6,27 +6,38 @@ from django.core.urlresolvers import reverse
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.views.generic import ListView, UpdateView
+from django_tables2 import SingleTableView, RequestConfig
 from django_yubin.messages import TemplatedHTMLEmailMessageView
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from .tables import TaskTable
 from transmanager.export import ExportQueryset
 from transmanager.serializers import TaskBulksSerializer
 from .models import TransTask
 from .forms import TaskForm
 from .filters.filters import TaskFilter
 from .permissions import AuthenticationMixin
+from .settings import TM_ORIGINAL_VALUE_CHARS_NUMBER
 
 
-class TaskListView(AuthenticationMixin, ListView):
-    # extends = 'cms/dashboard.html'
+# class TaskListView(AuthenticationMixin, ListView):
+class TaskListView(AuthenticationMixin, SingleTableView):
     extends = 'dashboard.html'
     model = TransTask
     template_name = "list.html"
     paginate_by = 25
     filter = None
+    table_class = TaskTable
+
+    def get_table(self, **kwargs):
+        kwargs['request'] = self.request
+        table_class = self.get_table_class()
+        table = table_class(self.get_table_data(), **kwargs)
+        RequestConfig(self.request, paginate=self.get_table_pagination(table)).configure(table)
+        return table
 
     def get_default_values(self):
         data = self.request.GET.copy()
@@ -45,6 +56,7 @@ class TaskListView(AuthenticationMixin, ListView):
         data['filter'] = self.filter
         data['total'] = self.filter.count()
         data['words'] = self.filter.qs.aggregate(number=Sum('number_of_words'))
+        data['original_value_max_chars'] = TM_ORIGINAL_VALUE_CHARS_NUMBER
         return data
 
     def get(self, request, *args, **kwargs):

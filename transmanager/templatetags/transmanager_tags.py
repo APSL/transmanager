@@ -53,7 +53,7 @@ def show_list_translations(context, item):
 @register.simple_tag()
 def get_main_menu():
     """
-    tag que devuelve las opciones del menú de la aplicación
+    Tag that returns the options of the app menu
     :return:
     """
     menu = [
@@ -69,3 +69,4 @@ def get_main_menu():
 @register.assignment_tag()
 def get_logo_url():
     return '{}{}'.format(settings.STATIC_URL, TM_BRAND_LOGO_URL)
+
