@@ -9,11 +9,12 @@ It's not for static files.
 Quick start
 -----------
 
-1. Add "transmanager" to your INSTALLED_APPS setting like this::
+1. Add "transmanager" and "django_tables2" to your INSTALLED_APPS setting like this::
 
     INSTALLED_APPS = [
         ...
         'transmanager',
+        'django_tables2',
     ]
 
 2. Include the transmanager URLconf in your project urls.py like this::
