@@ -1,0 +1,4 @@
+{{ object.object_field_value }}
+{{ object.object_field_value_translation }}
+{{ object.user }}
+{{ object.language.code }}

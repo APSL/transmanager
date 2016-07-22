@@ -3,7 +3,7 @@
 
 {% block content %}
     <link rel="stylesheet" href="{% static 'transmanager/css/transmanager.css' %}" type="text/css" media="screen"/>
-    <div id="task-form" class="col-xs-4 center-block">
+    <div id="task-form" class="col-xs-12 col-md-8 center-block">
         <form action="{% url 'transmanager-task-detail' object.id %}?{{ request.GET.urlencode }}" method="post">
             {% csrf_token %}
             <table>
@@ -15,4 +15,35 @@
             <input id="bsend" name="bsend" type="submit" value="{% trans 'Guardar' %}" class="btn btn-primary pull-right" />
         </form>
     </div>
+    {% if sqs %}
+        <div id="suggestions" class="col-xs-12 col-md-8 center-block">
+            <h3>{% trans 'Sugerencias' %}</h3>
+            <table border="1" class="col-xs-12">
+                {% for item in sqs %}
+                    {% if item.pk != obj_id %}
+                        <tr>
+                            <td nowrap>
+                                <a href="{% url 'transmanager-task-detail' item.pk %}?{{ request.GET.urlencode }}">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                            <td class="original">{{ item.object.object_field_value }}</td>
+                            <td class="translated">{{ item.object.object_field_value_translation }}</td>
+                            <td><a href="#" class="get-translation">
+                                <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                {% trans 'Usar traducción' %}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% empty %}
+                    <tr>
+                        <td colspan="4">
+                            {% trans 'No se han encontrado sugerencias' %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
 {% endblock %}

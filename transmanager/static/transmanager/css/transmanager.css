@@ -41,7 +41,6 @@ form.filter {
     margin: 0 0 20px 0;
     min-height: 45px;
 }
-
 form.filter input {
     border-radius: 4px;
     border:1px solid #ccc;
@@ -85,4 +84,31 @@ a.navbar-brand {
     height: 55px;
     /*background: url(../img/logo.png) 0 -50px no-repeat;*/
     padding:10px;
+}
+
+table#taskList td.detail {
+    text-align: center;
+}
+
+div#suggestions {
+    clear: both;
+    float: none;
+    margin:20px auto 0 auto;
+    padding-bottom: 100px;
+    overflow: hidden;
+}
+div#suggestions table td {
+    padding:5px;
+}
+
+div#suggestions table td:first-child {
+    width:2%;
+    text-align: center;
+}
+div#suggestions table td.translated {
+    width:46%;
+}
+div#suggestions table td:last-child{
+    width:6%;
+    text-align: center;
 }

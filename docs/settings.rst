@@ -35,3 +35,12 @@ Number of chars that we want to show from the value to translate in the translat
 
 
 
+TM_HAYSTACK_DISABLED
+--------------------
+This property allow us to disable the enabled by default suggestion system via the "haystack" search engine.
+Default ``False``.
+
+
+TM_HAYSTACK_SUGGESTIONS_MAX_NUMBER
+----------------------------------
+Maximum number of translation suggestions we want to show in the translation task edit form. Default ``20``.

@@ -20,7 +20,7 @@ class TaskTable(tables.Table):
         fields = ('user', 'language', 'object_name', 'object_pk', 'object_field_label', 'object_field_value',
                   'number_of_words', 'date_creation', 'date_modification', 'done', 'detail')
         empty_text = _('No se han encontrado resultados')
-        attrs = {'class': 'table table-bordered table-hover table-condensed'}
+        attrs = {'class': 'table table-bordered table-hover table-condensed', 'id': 'taskList'}
         template = 'table.html'
 
     def __init__(self, *args, **kwargs):
@@ -35,8 +35,11 @@ class TaskTable(tables.Table):
 
     def render_detail(self, record, value):
         url = reverse('transmanager-task-detail', kwargs={'pk': record.id})
-        text = _('Editar')
         if self.GET:
-            return mark_safe('<a href="{0}?{1}">{2}</a>'.format(url, self.GET.urlencode(), text))
+            return mark_safe('<a href="{0}?{1}">'
+                             '<i class="fa fa-pencil-square-o" aria-hidden="true"></i> '
+                             '</a>'.format(url, self.GET.urlencode()))
         else:
-            return mark_safe('<a href="{0}">{1}</a>'.format(url, text))
+            return mark_safe('<a href="{0}">'
+                             '<i class="fa fa-pencil-square-o" aria-hidden="true"></i> '
+                             '</a>'.format(url))

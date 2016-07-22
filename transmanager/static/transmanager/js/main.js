@@ -22,5 +22,11 @@ $(document).ready(function(){
         e.preventDefault();
         $(this).closest('form').find("input[type=text]").val("").end().find("select").val('').end().submit();
     });
+    
+    $('body').on('click', '.get-translation', function(e){
+        e.preventDefault();
+        var value = $(this).closest('td').prev().html();
+        $('#id_object_field_value_translation').val(value);
+    });
 
 });

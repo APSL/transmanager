@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.views.generic import ListView, UpdateView
 from django_tables2 import SingleTableView, RequestConfig
 from django_yubin.messages import TemplatedHTMLEmailMessageView
+from haystack.query import SearchQuerySet
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -20,7 +21,7 @@ from .models import TransTask
 from .forms import TaskForm
 from .filters.filters import TaskFilter
 from .permissions import AuthenticationMixin
-from .settings import TM_ORIGINAL_VALUE_CHARS_NUMBER
+from .settings import TM_ORIGINAL_VALUE_CHARS_NUMBER, TM_HAYSTACK_DISABLED, TM_HAYSTACK_SUGGESTIONS_MAX_NUMBER
 
 
 # class TaskListView(AuthenticationMixin, ListView):
@@ -78,6 +79,14 @@ class TaskDetailView(AuthenticationMixin, UpdateView):
     form_class = TaskForm
     template_name = 'detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if not TM_HAYSTACK_DISABLED:
+            sqs = SearchQuerySet().filter(content=self.object.object_field_value).filter(language=self.object.language)
+            context['sqs'] = sqs[:TM_HAYSTACK_SUGGESTIONS_MAX_NUMBER]
+            context['obj_id'] = str(self.object.id)
+        return context
+
     def get_success_url(self):
         url = '{}?{}'.format(reverse('transmanager-task-list'), self.request.GET.urlencode())
         return url
@@ -97,10 +106,9 @@ class TaskDetailView(AuthenticationMixin, UpdateView):
         return initial
 
 
-#  @todo resolve permission to post/delete to the API
+# @todo resolve permission to post/delete to the API
 # class TaskBulksView(AuthenticationMixin, APIView):
 class TaskBulksView(APIView):
-
     """
     Handles the bulk addtion of translation tasks
     POST creates translations

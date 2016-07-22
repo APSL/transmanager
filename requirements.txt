@@ -1,3 +1,4 @@
+haystack
 alabaster==0.7.8
 argh==0.26.2
 Babel==2.3.4
@@ -35,3 +36,5 @@ xlrd==0.9.4
 XlsxWriter==0.8.9
 django-bootstrap-pagination==1.5.1
 django-tables2==1.2.3
+django-haystack==2.5.0
+Whoosh==2.7.4

@@ -42,6 +42,6 @@ class TaskForm(forms.ModelForm):
             'object_field_label': forms.TextInput(attrs={'readonly': 'readonly'}),
             'number_of_words': forms.TextInput(attrs={'readonly': 'readonly'}),
             'object_field_value': forms.Textarea(attrs={'readonly': 'readonly'}),
-            'user': forms.Select(attrs={'readonly': 'readonly'}),
-            'language': forms.Select(attrs={'readonly': 'readonly'}),
+            'user': forms.Select(attrs={'readonly': 'readonly', 'disabled': 'disabled'}),
+            'language': forms.Select(attrs={'readonly': 'readonly', 'disabled': 'disabled'}),
         }
