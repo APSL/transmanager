@@ -6,9 +6,7 @@
     <div id="task-form" class="col-xs-12 col-md-8 center-block">
         <form action="{% url 'transmanager-task-detail' object.id %}?{{ request.GET.urlencode }}" method="post">
             {% csrf_token %}
-            <table>
             {{ form.as_p }}
-            </table>
             <a href="{% url 'transmanager-task-list' %}?{{ request.GET.urlencode }}">
                 {% trans 'Volver al listado' %}
             </a>

@@ -26,7 +26,7 @@ $(document).ready(function(){
     $('body').on('click', '.get-translation', function(e){
         e.preventDefault();
         var value = $(this).closest('td').prev().html();
-        $('#id_object_field_value_translation').val(value);
+        $('#id_object_field_value_translation').val(value).focus();
     });
 
 });
