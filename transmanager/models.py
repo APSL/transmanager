@@ -142,6 +142,10 @@ class TransTask(models.Model):
             return
         return ct.model_class()
 
+    @property
+    def has_value(self):
+        return self.object_field_value_translation != '' and self.object_field_value_translation is not None
+
 
 class TransApplicationLanguage(models.Model):
 

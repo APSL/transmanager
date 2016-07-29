@@ -82,7 +82,8 @@ class TaskDetailView(AuthenticationMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if not TM_HAYSTACK_DISABLED:
-            sqs = SearchQuerySet().filter(content=self.object.object_field_value).filter(language=self.object.language)
+            sqs = SearchQuerySet().filter(content=self.object.object_field_value).\
+                filter(language=self.object.language).filter(has_value=True)
             context['sqs'] = sqs[:TM_HAYSTACK_SUGGESTIONS_MAX_NUMBER]
             context['obj_id'] = str(self.object.id)
         return context

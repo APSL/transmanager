@@ -7,7 +7,7 @@ from .models import TransTask
 
 class TransTaskIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    object_field_value_translation = indexes.CharField(model_attr='object_field_value_translation', null=True)
+    has_value = indexes.CharField(model_attr='has_value')
     language = indexes.CharField(model_attr='language')
     user = indexes.CharField(model_attr='user')
 
