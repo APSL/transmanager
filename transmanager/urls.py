@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 from django.conf.urls import patterns, url
-from .views import TaskListView, TaskDetailView, TaskBulksView, UploadTranslationsView, MessageView
+from .views import TaskListView, TaskDetailView, TaskBulksView, UploadTranslationsView, MessageView, DownloadFileView
 
 urlpatterns = patterns(
     '',
@@ -10,5 +10,6 @@ urlpatterns = patterns(
     url(r'^/api/task/$', TaskBulksView.as_view(), name='transmanager-task-bulks'),
     url(r'^/upload-translations/$', UploadTranslationsView.as_view(), name='transmanager-upload-translations'),
     url(r'^/message/$', MessageView.as_view(), name='transmanager-message'),
+    url(r'^download-file/(?P<uuid>[a-zA-z0-9-]+)/$', DownloadFileView.as_view(), name='download-file'),
 
 )

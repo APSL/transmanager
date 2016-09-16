@@ -1,14 +1,15 @@
 # -*- encoding: utf-8 -*-
 
 from django.contrib import messages
+from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models import Sum
-from django.http import HttpResponse
-from django.views.generic import ListView, UpdateView, FormView, TemplateView
-from django.shortcuts import HttpResponseRedirect
+from django.views.generic import UpdateView, FormView, TemplateView
+from django.shortcuts import HttpResponseRedirect, HttpResponse
+from django.views.generic.detail import BaseDetailView
 from django_tables2 import SingleTableView, RequestConfig
 from django_yubin.messages import TemplatedHTMLEmailMessageView
 from haystack.query import SearchQuerySet
@@ -18,17 +19,15 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .tables import TaskTable
-from .export import ExportQueryset
 from .serializers import TaskBulksSerializer
-from .models import TransTask
+from .models import TransTask, TransUserExport
 from .forms import TaskForm, UploadTranslationsForm
 from .filters.filters import TaskFilter
 from .permissions import AuthenticationMixin
 from .settings import TM_ORIGINAL_VALUE_CHARS_NUMBER, TM_HAYSTACK_DISABLED, TM_HAYSTACK_SUGGESTIONS_MAX_NUMBER
-from .tasks.tasks import import_translations_from_excel
+from .tasks.tasks import import_translations_from_excel, export_translations_to_excel
 
 
-# class TaskListView(AuthenticationMixin, ListView):
 class TaskListView(AuthenticationMixin, SingleTableView):
     extends = 'dashboard.html'
     model = TransTask
@@ -65,16 +64,29 @@ class TaskListView(AuthenticationMixin, SingleTableView):
         return data
 
     def get(self, request, *args, **kwargs):
+
         if request.GET.get('export', False):
-            qs = self.get_queryset()
-            export = ExportQueryset(qs, self.model, ('id', 'object_name', 'object_pk',
-                                                     'object_field_label', 'object_field_value', 'number_of_words',
-                                                     'object_field_value_translation', 'date_modification', 'done'))
-            excel = export.get_excel()
-            response = HttpResponse(excel, content_type='application/xls')
-            response['Content-Disposition'] = 'attachment;filename=export.xls'
-            return response
+            tasks_ids = self.get_queryset().queryset.values_list('id', flat=True)
+            export_translations_to_excel(tasks_ids, self.request.user.id)
+            messages.info(
+                self.request,
+                _('Iniciado el proceso de exportación de traducciones.\nSe notificará al usuario una vez concluído')
+            )
+            return HttpResponseRedirect(reverse('transmanager-message'))
+
         return super().get(request, *args, **kwargs)
+
+    # def get(self, request, *args, **kwargs):
+    #     if request.GET.get('export', False):
+    #         qs = self.get_queryset()
+    #         export = ExportQueryset(qs, self.model, ('id', 'object_name', 'object_pk',
+    #                                                  'object_field_label', 'object_field_value', 'number_of_words',
+    #                                                  'object_field_value_translation', 'date_modification', 'done'))
+    #         excel = export.get_excel()
+    #         response = HttpResponse(excel, content_type='application/xls')
+    #         response['Content-Disposition'] = 'attachment;filename=export.xls'
+    #         return response
+    #     return super().get(request, *args, **kwargs)
 
 
 class TaskDetailView(AuthenticationMixin, UpdateView):
@@ -109,6 +121,93 @@ class TaskDetailView(AuthenticationMixin, UpdateView):
         except ObjectDoesNotExist:
             pass
         return initial
+
+
+class TaskUserNotificationView(TemplatedHTMLEmailMessageView):
+    """
+    View used to define the notification of translation pending task to the translators.
+    """
+    subject_template_name = 'notification/subject.txt'
+    body_template_name = 'notification/body.txt'
+    html_body_template_name = 'notification/body.html'
+
+    def __init__(self, tasks, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.tasks = tasks
+        self.user = user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tasks'] = self.tasks
+        context['user'] = self.user
+        return context
+
+
+class UploadTranslationsView(FormView):
+    """
+    View that allow the user upload an excel with translations and update the translations tasks
+    """
+    form_class = UploadTranslationsForm
+    template_name = 'upload-translations.html'
+
+    def form_valid(self, form):
+        import_translations_from_excel.delay(form.cleaned_data['file'], form.cleaned_data['user'].user.id)
+        messages.info(
+            self.request,
+            _('Iniciado el proceso de importación de traducciones.\nSe notificará al usuario una vez concluído')
+        )
+        return HttpResponseRedirect(reverse('transmanager-message'))
+
+
+class ImportExportNotificationView(TemplatedHTMLEmailMessageView):
+    """
+    View used to notificate the user the end of the importation process
+    """
+    subject_template_name = 'notification/import_export_notification_subject.txt'
+    body_template_name = 'notification/import_export_notification_body.txt'
+    html_body_template_name = 'notification/import_export_notification_body.html'
+
+    def __init__(self, user, errors=None, user_export=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.user_export = user_export
+        self.errors = errors
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.user
+        context['user_export'] = self.user_export
+        context['errors'] = self.errors
+        return context
+
+
+class MessageView(TemplateView):
+    """
+    View that holds the message window
+    """
+    template_name = 'message.html'
+
+
+class DownloadFileView(BaseDetailView):
+    """
+    View used to download the file exported by the user
+    """
+    model = TransUserExport
+    slug_url_kwarg = 'uuid'
+    slug_field = 'uuid'
+
+    def get(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.user_id != self.request.user.id and not self.is_superuser:
+            raise Http404
+        file_name = obj.custom_filename or obj.file.name
+        response = HttpResponse(obj.file.read(), content_type='application/xls')
+        response['Content-Disposition'] = 'attachment; filename="{}"'.format(file_name)
+        return response
+
+    @property
+    def is_superuser(self):
+        return self.request.user.is_superuser
 
 
 # @todo resolve permission to post/delete to the API
@@ -171,62 +270,3 @@ class TaskBulksView(APIView):
             return Response(data=serializer.delete(), status=status.HTTP_200_OK)
         except Exception as e:
             return Response(data=str(e), status=status.HTTP_400_BAD_REQUEST)
-
-
-class TaskUserNotificationView(TemplatedHTMLEmailMessageView):
-    """
-    View used to define the notification of translation pending task to the translators.
-    """
-    subject_template_name = 'notification/subject.txt'
-    body_template_name = 'notification/body.txt'
-    html_body_template_name = 'notification/body.html'
-
-    def __init__(self, tasks, user, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.tasks = tasks
-        self.user = user
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['tasks'] = self.tasks
-        context['user'] = self.user
-        return context
-
-
-class UploadTranslationsView(FormView):
-    form_class = UploadTranslationsForm
-    template_name = 'upload-translations.html'
-    success_url = 'transmanager-message'
-
-    def form_valid(self, form):
-        import_translations_from_excel.delay(form.cleaned_data['file'], form.cleaned_data['user'].id)
-        messages.info(
-            self.request,
-            _('Iniciado el proceso de importación de traducciones.\nSe notificará al usuario una vez concluído')
-        )
-        return HttpResponseRedirect(reverse(self.success_url))
-
-
-class EndImportationNotificationView(TemplatedHTMLEmailMessageView):
-    """
-    View used to define the notification of translation pending task to the translators.
-    """
-    subject_template_name = 'notification/end_importation_notification_subject.txt'
-    body_template_name = 'notification/end_importation_notification_body.txt'
-    html_body_template_name = 'notification/end_importation_notification_body.html'
-
-    def __init__(self, user, errors, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.user = user
-        self.errors = errors
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user'] = self.user
-        context['errors'] = self.errors
-        return context
-
-
-class MessageView(TemplateView):
-    template_name = 'message.html'
-

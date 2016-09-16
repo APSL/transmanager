@@ -1,2 +1,0 @@
-{% load i18n %}
-[TRANSMANAGER] - {% trans 'Notificación de proceso de importación de traducciones' %} - {{ user.user.first_name }} {{ user.user.last_name }} - {{ user.user.email }}

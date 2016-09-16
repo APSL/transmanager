@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 import logging
-
+import uuid as uuid
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
@@ -209,3 +209,21 @@ class TransItemLanguage(models.Model):
     def _languages(self):
         return ', '.join([lang.name for lang in self.languages.order_by('name')])
     _languages.short_description = _('Idiomas')
+
+
+class TransUserExport(models.Model):
+
+    def upload_path(self, filename):
+        return 'user-exports/{}/{}'.format(self.user.id, filename)
+
+    user = models.ForeignKey(User, verbose_name=_('user'), related_name='exports')
+    file = models.FileField(upload_to=upload_path, blank=True, null=True, max_length=255)
+    creation_date = models.DateTimeField(_('creation date'), auto_now_add=True)
+    uuid = models.UUIDField(default=uuid.uuid4, verbose_name=_('Unique identifier'), unique=True)
+
+    class Meta:
+        verbose_name = _('User export')
+        verbose_name_plural = _('User exports')
+
+    def __str__(self):
+        return '{} - {}'.format(self.user.id, self.file.name)

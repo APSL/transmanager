@@ -9,6 +9,7 @@ from .models import TransTask
 
 logger = logging.getLogger(__name__)
 
+
 class ExportQueryset(object):
     """
     Utility to export querysets to excel
@@ -50,9 +51,20 @@ class ExportQueryset(object):
 
 class ExportBo(object):
     """
-    @todo
+    Class that encapsulates the task of exporting the translations taks to an excel file
     """
-    pass
+
+    @staticmethod
+    def export_translations(tasks_ids):
+        qs = TransTask.objects.filter(pk__in=tasks_ids)
+        export = ExportQueryset(
+            qs,
+            TransTask,
+            ('id', 'object_name', 'object_pk', 'object_field_label', 'object_field_value', 'number_of_words',
+             'object_field_value_translation', 'date_modification', 'done')
+        )
+        excel = export.get_excel()
+        return excel
 
 
 class ImportBo(object):
