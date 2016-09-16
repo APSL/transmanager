@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>[TRANSMANAGER] - {% trans 'Notificación de proceso de importación de traducciones' %}</title>
+</head>
+<body>
+    <h3>[TRANSMANAGER] - {% trans 'Notificación de proceso de importación de traducciones' %}</h3>
+    <p>{% trans 'Para' %}: {{ user.user.first_name }} {{ user.user.last_name }} ({{ user.user.email }})</p>
+    {% if not errors %}
+        <p>{% trans 'El proceso de importación ha finalizado correctamente' %}</p>
+    {% else %}
+        <p>{% trans 'Se han producido los siguientes errores' %}:</p>
+        <ul>
+        {% for error in errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    <p><a href="{% url 'transmanager-task-list' %}">{% trans 'Ir al listado de tareas pendientes' %}</a></p>
+</body>
+</html>

@@ -1,8 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 import logging
-from transmanager.tasks.tasks import create_translations_for_item_and_its_children, \
-    delete_translations_for_item_and_its_children
+from .tasks.tasks import create_translations_for_item_and_its_children, delete_translations_for_item_and_its_children
 
 logger = logging.getLogger(__name__)
 

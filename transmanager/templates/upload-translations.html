@@ -1,0 +1,16 @@
+{% extends view.extends|default:'dashboard.html' %}
+{% load i18n static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'transmanager/css/transmanager.css' %}" type="text/css" media="screen"/>
+    <div id="task-form" class="col-xs-12 col-md-8 center-block">
+        <form action="{% url 'transmanager-upload-translations' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <a href="{% url 'transmanager-task-list' %}?{{ request.GET.urlencode }}">
+                {% trans 'Volver al listado' %}
+            </a>
+            <input id="bsend" name="bsend" type="submit" value="{% trans 'Subir' %}" class="btn btn-primary pull-right" />
+        </form>
+    </div>
+{% endblock %}

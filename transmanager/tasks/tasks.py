@@ -2,7 +2,11 @@
 
 import django_rq
 from rq.decorators import job
-from transmanager.manager import Manager
+
+# from ..views import EndImportationNotificationView
+# from ..models import TransUser
+from ..manager import Manager
+from ..export import ImportBo
 
 
 @job('default', connection=django_rq.get_connection('default'))
@@ -36,3 +40,13 @@ def do_action(action, model_class, item_id, languages=None, update_item_language
         manager.delete_translations_for_item_and_its_children(item, languages)
         if update_item_languages:
             manager.remove_item_languages(item, languages)
+
+
+@job('default', connection=django_rq.get_connection('default'))
+def import_translations_from_excel(file, user_id):
+    from ..views import EndImportationNotificationView
+    from ..models import TransUser
+    user = TransUser.objects.get(pk=user_id)
+    imp = ImportBo()
+    errors = imp.import_translations(file)
+    EndImportationNotificationView(user=user, errors=errors).send(to=(user.user.email,))

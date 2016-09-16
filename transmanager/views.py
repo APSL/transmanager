@@ -1,11 +1,14 @@
 # -*- encoding: utf-8 -*-
 
+from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models import Sum
 from django.http import HttpResponse
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, FormView, TemplateView
+from django.shortcuts import HttpResponseRedirect
 from django_tables2 import SingleTableView, RequestConfig
 from django_yubin.messages import TemplatedHTMLEmailMessageView
 from haystack.query import SearchQuerySet
@@ -15,13 +18,14 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .tables import TaskTable
-from transmanager.export import ExportQueryset
-from transmanager.serializers import TaskBulksSerializer
+from .export import ExportQueryset
+from .serializers import TaskBulksSerializer
 from .models import TransTask
-from .forms import TaskForm
+from .forms import TaskForm, UploadTranslationsForm
 from .filters.filters import TaskFilter
 from .permissions import AuthenticationMixin
 from .settings import TM_ORIGINAL_VALUE_CHARS_NUMBER, TM_HAYSTACK_DISABLED, TM_HAYSTACK_SUGGESTIONS_MAX_NUMBER
+from .tasks.tasks import import_translations_from_excel
 
 
 # class TaskListView(AuthenticationMixin, ListView):
@@ -187,3 +191,42 @@ class TaskUserNotificationView(TemplatedHTMLEmailMessageView):
         context['tasks'] = self.tasks
         context['user'] = self.user
         return context
+
+
+class UploadTranslationsView(FormView):
+    form_class = UploadTranslationsForm
+    template_name = 'upload-translations.html'
+    success_url = 'transmanager-message'
+
+    def form_valid(self, form):
+        import_translations_from_excel.delay(form.cleaned_data['file'], form.cleaned_data['user'].id)
+        messages.info(
+            self.request,
+            _('Iniciado el proceso de importación de traducciones.\nSe notificará al usuario una vez concluído')
+        )
+        return HttpResponseRedirect(reverse(self.success_url))
+
+
+class EndImportationNotificationView(TemplatedHTMLEmailMessageView):
+    """
+    View used to define the notification of translation pending task to the translators.
+    """
+    subject_template_name = 'notification/end_importation_notification_subject.txt'
+    body_template_name = 'notification/end_importation_notification_body.txt'
+    html_body_template_name = 'notification/end_importation_notification_body.html'
+
+    def __init__(self, user, errors, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.errors = errors
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.user
+        context['errors'] = self.errors
+        return context
+
+
+class MessageView(TemplateView):
+    template_name = 'message.html'
+

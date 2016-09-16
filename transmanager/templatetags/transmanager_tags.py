@@ -57,10 +57,15 @@ def get_main_menu():
     :return:
     """
     menu = [
+
         {'name': _("Tareas pendiente traducción"),
          'icon': 'fa fa-product-hunt',
-         'url': 'transmanager-task-list'
-         },
+         'url': 'transmanager-task-list'},
+
+        {'name': _("Subir archivo traducciones"),
+         'icon': 'fa fa-file-excel-o',
+         'url': 'transmanager-upload-translations'},
+
     ]
 
     return render_to_string('menu/main_menu.html', {'menu': menu})

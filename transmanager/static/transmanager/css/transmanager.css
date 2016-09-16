@@ -112,3 +112,55 @@ div#suggestions table td:last-child{
     width:6%;
     text-align: center;
 }
+
+
+#messageWindow .container {
+    width: 535px;
+    /*height: 300px;*/
+    padding:50px;
+    margin:250px auto;
+    color:#3c3c3c;
+    border:1px solid #dcdcdc;
+    background-color: #fff;
+    font-family: "Roboto", Helvetica, Arial;
+    -moz-box-shadow: 2px 2px 8px #9f9c9c;
+    -webkit-box-shadow: 2px 2px 8px #9f9c9c;
+    box-shadow: 2px 2px 8px #9f9c9c;
+    filter: progid:DXImageTransform.Microsoft.Shadow(strength = 2, direction = 135, color = '#9f9c9c');
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(strength = 2, Direction = 135, Color = '#9f9c9c')";
+}
+
+#messageWindow .container h1 {
+    overflow: hidden;display: block;margin:0;padding:0;background-color: #dcdcdc;height: 90px;width:100%;
+}
+
+/*#messageWindow .container h1 img {*/
+    /*display: block;width: 140px;margin:25px auto;*/
+/*}*/
+
+#messageWindow .container h2 {
+    font-size:70px;margin: 25px 0 0 0;padding: 0;text-align: center;
+}
+
+#messageWindow .container ul{
+    margin:0;
+    padding: 0;
+    list-style: none;
+}
+
+#messageWindow .container ul li {
+    display: block;padding:0;margin: 0;text-align: center;font-size: 18px;
+}
+
+#messageWindow .container a {
+    display: block;
+    width:115px;
+    height:30px;
+    line-height: 30px;
+    margin: 20px auto 0 auto;
+    background-color: #182a74;
+    color:#fff;
+    font-size:14px;
+    text-align: center;
+    text-decoration: none;
+}

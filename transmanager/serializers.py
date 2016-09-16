@@ -3,12 +3,13 @@
 """
 Common serializers to be used by the own serializers from each API module
 """
-from transmanager.models import TransTask, TransLanguage, TransUser
-from .manager import Manager
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from rest_framework.fields import ListField
 from rest_framework import serializers
+
+from .models import TransTask, TransLanguage, TransUser
+from .manager import Manager
 from .tasks.tasks import delete_translations_for_item_and_its_children, create_translations_for_item_and_its_children
 
 

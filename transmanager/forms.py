@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms import ModelForm
 from django import forms
 from transmanager.utils import get_model_choices, get_application_choices
-from .models import TransTask, TransModelLanguage, TransApplicationLanguage
+from .models import TransTask, TransModelLanguage, TransApplicationLanguage, TransUser
 
 
 class TransApplicationLanguageAdminForm(ModelForm):
@@ -55,3 +55,17 @@ class TaskForm(forms.ModelForm):
             'user': forms.HiddenInput(attrs={'readonly': 'readonly'}),
             'language': forms.HiddenInput(attrs={'readonly': 'readonly'}),
         }
+
+
+class UploadTranslationsForm(forms.Form):
+
+    user = forms.ModelChoiceField(
+        queryset=TransUser.objects.filter(active=True),
+        label=_('Usuario'),
+        help_text=_('Usuario al que se notificará el final del proceso de importación')
+    )
+
+    file = forms.FileField(
+        label=_('Archivo'),
+        help_text=_('Archivo en formato excel que contiene las traducciones')
+    )
