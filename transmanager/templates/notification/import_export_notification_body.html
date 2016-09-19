@@ -9,7 +9,7 @@
 <body>
 
     <h3>[TRANSMANAGER] - {% trans 'Notificación de proceso de importación/exportación de traducciones' %}</h3>
-    <p>{% trans 'Para' %}: {{ user.user.first_name }} {{ user.user.last_name }} ({{ user.user.email }})</p>
+    <p>{% trans 'Para' %}: {{ user.first_name }} {{ user.last_name }} ({{ user.email }})</p>
     {% if not errors %}
         <p>{% trans 'El proceso de importación/exportación ha finalizado correctamente' %}</p>
     {% else %}
@@ -22,7 +22,7 @@
     {% endif %}
 
     {% if user_export and not errors%}
-        <p><a href="{% url 'transmanager-download-export' user_export.uuid %}">
+        <p><a href="{% url 'transmanager-download-file' user_export.uuid %}">
             {% trans 'Descargar archivo' %}
         </a></p>
     {% endif %}

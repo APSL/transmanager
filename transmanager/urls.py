@@ -10,6 +10,6 @@ urlpatterns = patterns(
     url(r'^/api/task/$', TaskBulksView.as_view(), name='transmanager-task-bulks'),
     url(r'^/upload-translations/$', UploadTranslationsView.as_view(), name='transmanager-upload-translations'),
     url(r'^/message/$', MessageView.as_view(), name='transmanager-message'),
-    url(r'^download-file/(?P<uuid>[a-zA-z0-9-]+)/$', DownloadFileView.as_view(), name='download-file'),
+    url(r'^/download-file/(?P<uuid>[a-zA-z0-9-]+)/$', DownloadFileView.as_view(), name='transmanager-download-file'),
 
 )

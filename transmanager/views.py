@@ -53,7 +53,7 @@ class TaskListView(AuthenticationMixin, SingleTableView):
         if self.translator_user:
             qs = qs.filter(user=self.translator_user)
         self.filter = TaskFilter(self.get_default_values(), queryset=qs, user=self.translator_user)
-        return self.filter
+        return self.filter.qs
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -66,8 +66,8 @@ class TaskListView(AuthenticationMixin, SingleTableView):
     def get(self, request, *args, **kwargs):
 
         if request.GET.get('export', False):
-            tasks_ids = self.get_queryset().queryset.values_list('id', flat=True)
-            export_translations_to_excel(tasks_ids, self.request.user.id)
+            tasks_ids = self.get_queryset().values_list('id', flat=True)
+            export_translations_to_excel.delay(tasks_ids, self.request.user.id)
             messages.info(
                 self.request,
                 _('Iniciado el proceso de exportación de traducciones.\nSe notificará al usuario una vez concluído')
@@ -75,18 +75,6 @@ class TaskListView(AuthenticationMixin, SingleTableView):
             return HttpResponseRedirect(reverse('transmanager-message'))
 
         return super().get(request, *args, **kwargs)
-
-    # def get(self, request, *args, **kwargs):
-    #     if request.GET.get('export', False):
-    #         qs = self.get_queryset()
-    #         export = ExportQueryset(qs, self.model, ('id', 'object_name', 'object_pk',
-    #                                                  'object_field_label', 'object_field_value', 'number_of_words',
-    #                                                  'object_field_value_translation', 'date_modification', 'done'))
-    #         excel = export.get_excel()
-    #         response = HttpResponse(excel, content_type='application/xls')
-    #         response['Content-Disposition'] = 'attachment;filename=export.xls'
-    #         return response
-    #     return super().get(request, *args, **kwargs)
 
 
 class TaskDetailView(AuthenticationMixin, UpdateView):
@@ -123,6 +111,50 @@ class TaskDetailView(AuthenticationMixin, UpdateView):
         return initial
 
 
+class MessageView(AuthenticationMixin, TemplateView):
+    """
+    View that holds the message window
+    """
+    template_name = 'message.html'
+
+
+class UploadTranslationsView(FormView):
+    """
+    View that allow the user upload an excel with translations and update the translations tasks
+    """
+    form_class = UploadTranslationsForm
+    template_name = 'upload-translations.html'
+
+    def form_valid(self, form):
+        import_translations_from_excel.delay(form.cleaned_data['file'], form.cleaned_data['user'].user.id)
+        messages.info(
+            self.request,
+            _('Iniciado el proceso de importación de traducciones.\nSe notificará al usuario una vez concluído')
+        )
+        return HttpResponseRedirect(reverse('transmanager-message'))
+
+
+class DownloadFileView(BaseDetailView):
+    """
+    View used to download the file exported by the user
+    """
+    model = TransUserExport
+    slug_url_kwarg = 'uuid'
+    slug_field = 'uuid'
+
+    def get(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.user_id != self.request.user.id and not self.is_superuser:
+            raise Http404
+        response = HttpResponse(obj.file.read(), content_type='application/xls')
+        response['Content-Disposition'] = 'attachment; filename="{}"'.format(obj.file.name)
+        return response
+
+    @property
+    def is_superuser(self):
+        return self.request.user.is_superuser
+
+
 class TaskUserNotificationView(TemplatedHTMLEmailMessageView):
     """
     View used to define the notification of translation pending task to the translators.
@@ -141,22 +173,6 @@ class TaskUserNotificationView(TemplatedHTMLEmailMessageView):
         context['tasks'] = self.tasks
         context['user'] = self.user
         return context
-
-
-class UploadTranslationsView(FormView):
-    """
-    View that allow the user upload an excel with translations and update the translations tasks
-    """
-    form_class = UploadTranslationsForm
-    template_name = 'upload-translations.html'
-
-    def form_valid(self, form):
-        import_translations_from_excel.delay(form.cleaned_data['file'], form.cleaned_data['user'].user.id)
-        messages.info(
-            self.request,
-            _('Iniciado el proceso de importación de traducciones.\nSe notificará al usuario una vez concluído')
-        )
-        return HttpResponseRedirect(reverse('transmanager-message'))
 
 
 class ImportExportNotificationView(TemplatedHTMLEmailMessageView):
@@ -179,35 +195,6 @@ class ImportExportNotificationView(TemplatedHTMLEmailMessageView):
         context['user_export'] = self.user_export
         context['errors'] = self.errors
         return context
-
-
-class MessageView(TemplateView):
-    """
-    View that holds the message window
-    """
-    template_name = 'message.html'
-
-
-class DownloadFileView(BaseDetailView):
-    """
-    View used to download the file exported by the user
-    """
-    model = TransUserExport
-    slug_url_kwarg = 'uuid'
-    slug_field = 'uuid'
-
-    def get(self, request, *args, **kwargs):
-        obj = self.get_object()
-        if obj.user_id != self.request.user.id and not self.is_superuser:
-            raise Http404
-        file_name = obj.custom_filename or obj.file.name
-        response = HttpResponse(obj.file.read(), content_type='application/xls')
-        response['Content-Disposition'] = 'attachment; filename="{}"'.format(file_name)
-        return response
-
-    @property
-    def is_superuser(self):
-        return self.request.user.is_superuser
 
 
 # @todo resolve permission to post/delete to the API

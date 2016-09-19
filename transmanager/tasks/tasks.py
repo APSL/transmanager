@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 from django.utils.translation import ugettext_lazy as _
 from django.core.files import File
+from django.core.files.base import ContentFile
 from rq.decorators import job
 
 from ..manager import Manager
@@ -62,12 +63,12 @@ def export_translations_to_excel(task_ids, user_id):
     if bin_file:
         filename = 'export-user-{}.xls'.format(user_id)
         user_export = TransUserExport.objects.create(user=user, uuid=uuid.uuid4())
-        user_export.file.save(filename, File(bin_file))
+        user_export.file.save(filename, ContentFile(bin_file))
         errors = None
     else:
         user_export = None
         errors = [_('No se ha podido generar el archivo')]
-    ImportExportNotificationView(user=user, user_export=user_export, errors=errors).send(to=(user.user.email,))
+    ImportExportNotificationView(user=user, user_export=user_export, errors=errors).send(to=(user.email,))
 
 
 
