@@ -126,7 +126,7 @@ class UploadTranslationsView(FormView):
     template_name = 'upload-translations.html'
 
     def form_valid(self, form):
-        import_translations_from_excel.delay(form.cleaned_data['file'], form.cleaned_data['user'].user.id)
+        import_translations_from_excel.delay(form.cleaned_data['file'], self.request.user.id)
         messages.info(
             self.request,
             _('Iniciado el proceso de importación de traducciones.\nSe notificará al usuario una vez concluído')

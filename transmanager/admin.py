@@ -9,7 +9,7 @@ from transmanager.forms import TransModelLanguageAdminForm, TransApplicationLang
 from transmanager.tasks.tasks import create_translations_for_item_and_its_children, \
     delete_translations_for_item_and_its_children
 from .models import TransTask, TransUser, TransLanguage, TransApplicationLanguage, TransModelLanguage, \
-    TransItemLanguage
+    TransItemLanguage, TransUserExport
 
 
 @admin.register(TransApplicationLanguage)
@@ -138,3 +138,9 @@ class TransItemLanguageAdmin(admin.ModelAdmin):
         if db_field.name == 'content_type':
             kwargs['queryset'] = ContentType.objects.exclude(model__contains='translation').order_by('model')
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+@admin.register(TransUserExport)
+class TransUserExportAdmin(admin.ModelAdmin):
+    list_display = ('user', 'creation_date', 'uuid')
+    list_filter = ('user', )

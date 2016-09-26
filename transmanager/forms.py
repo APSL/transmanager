@@ -59,11 +59,11 @@ class TaskForm(forms.ModelForm):
 
 class UploadTranslationsForm(forms.Form):
 
-    user = forms.ModelChoiceField(
-        queryset=TransUser.objects.filter(active=True),
-        label=_('Usuario'),
-        help_text=_('Usuario al que se notificará el final del proceso de importación')
-    )
+    # user = forms.ModelChoiceField(
+    #     queryset=TransUser.objects.filter(active=True),
+    #     label=_('Usuario'),
+    #     help_text=_('Usuario al que se notificará el final del proceso de importación')
+    # )
 
     file = forms.FileField(
         label=_('Archivo'),
