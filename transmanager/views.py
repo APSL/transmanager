@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 from django.contrib import messages
+from django.contrib.sites.models import Site
 from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
@@ -191,6 +192,8 @@ class ImportExportNotificationView(TemplatedHTMLEmailMessageView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        site = Site.objects.get_current()
+        context['domain_url'] = 'http://{}'.format(site.domain)
         context['user'] = self.user
         context['user_export'] = self.user_export
         context['errors'] = self.errors

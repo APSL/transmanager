@@ -22,12 +22,12 @@
     {% endif %}
 
     {% if user_export and not errors%}
-        <p><a href="{% url 'transmanager-download-file' user_export.uuid %}">
+        <p><a href="{{ domain_url }}{% url 'transmanager-download-file' user_export.uuid %}">
             {% trans 'Descargar archivo' %}
         </a></p>
     {% endif %}
 
-    <p><a href="{% url 'transmanager-task-list' %}">{% trans 'Ir al listado de tareas pendientes' %}</a></p>
+    <p><a href="{{ domain_url }}{% url 'transmanager-task-list' %}">{% trans 'Ir al listado de tareas pendientes' %}</a></p>
 
 </body>
 </html>
