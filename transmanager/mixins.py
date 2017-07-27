@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 import logging
+from .settings import TM_DISABLED
 from .tasks.tasks import create_translations_for_item_and_its_children, delete_translations_for_item_and_its_children
 
 logger = logging.getLogger(__name__)
@@ -35,13 +36,14 @@ class TranslationTasksMixin(object):
 
         super().save(force_insert, force_update, using, update_fields)
 
-        if create:
-            logger.info('X' * 20)
-            logger.info('CREATING FOR ITEM AND CHILDREN')
-            create_translations_for_item_and_its_children.delay(self.__class__, self.pk)
-            logger.info('END FOR ITEM AND CHILDREN\n\n')
-        elif delete:
-            logger.info('X' * 20)
-            logger.info('DELETING FOR ITEM AND CHILDREN')
-            delete_translations_for_item_and_its_children.delay(self.__class__, self.pk)
-            logger.info('END FOR ITEM AND CHILDREN\n\n')
+        if not TM_DISABLED:
+            if create:
+                logger.info('X' * 20)
+                logger.info('CREATING FOR ITEM AND CHILDREN')
+                create_translations_for_item_and_its_children.delay(self.__class__, self.pk)
+                logger.info('END FOR ITEM AND CHILDREN\n\n')
+            elif delete:
+                logger.info('X' * 20)
+                logger.info('DELETING FOR ITEM AND CHILDREN')
+                delete_translations_for_item_and_its_children.delay(self.__class__, self.pk)
+                logger.info('END FOR ITEM AND CHILDREN\n\n')

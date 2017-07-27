@@ -4,6 +4,11 @@ Settings
 TransManager provides setting variables in order to customize your installation.
 
 
+TM_DISABLED
+-----------
+This property allow us to disable Transmanager. It can be useful for test environments. Default ``False``.
+
+
 TM_DEFAULT_LANGUAGE_CODE
 ------------------------
 The default language code in **ISO 639-1** format. Default ``'es'``.

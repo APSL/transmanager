@@ -193,7 +193,8 @@ class ImportExportNotificationView(TemplatedHTMLEmailMessageView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         site = Site.objects.get_current()
-        context['domain_url'] = 'http://{}'.format(site.domain)
+        protocol = 'https' if self.request.is_secure() else 'http'
+        context['domain_url'] = '{}://{}'.format(protocol, site.domain)
         context['user'] = self.user
         context['user_export'] = self.user_export
         context['errors'] = self.errors

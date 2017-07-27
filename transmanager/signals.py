@@ -1,12 +1,15 @@
 # -*- encoding: utf-8 -*-
 
 import logging
+from .settings import TM_DISABLED
 
 logger = logging.getLogger(__name__)
 
 
 # gestió de les senyals #
 def object_on_pre_save(sender, instance, **kwargs):
+    if TM_DISABLED:
+        return
     from .manager import Manager
     man = Manager()
     man.start(sender, instance, **kwargs)

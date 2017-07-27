@@ -3,6 +3,7 @@
 import uuid
 import sys
 
+from .settings import TM_DISABLED
 from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
@@ -17,6 +18,8 @@ class TransManagerConfig(AppConfig):
 
     def ready(self):
         if 'test' in sys.argv:
+            return
+        if TM_DISABLED:
             return
         self.activate_pre_save_signal_for_models()
 
