@@ -37,3 +37,10 @@ Update the number of words to translate in every task. It counts the number of w
 
 :code:`python manage.py update_number_of_words`
 
+
+Delete disabled parent tasks
+----------------------------
+This commands deletes the tasks that no longer have a parent enabled object. It is a command that
+can be executed from time to time or it can be added to the *cron*.
+
+:code:`python manage.py remove_tasks_for_disbled_parents`

@@ -2,6 +2,7 @@
 
 import re
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import FieldDoesNotExist
 from hvad.models import TranslatableModel
 
 
@@ -55,3 +56,18 @@ def get_num_words(text):
         return len(num_words)
     except TypeError:
         return 0
+
+
+def has_field(mc, field_name):
+    """
+    detect if a model has a given field has
+
+    :param field_name:
+    :param mc:
+    :return:
+    """
+    try:
+        mc._meta.get_field(field_name)
+    except FieldDoesNotExist:
+        return False
+    return True

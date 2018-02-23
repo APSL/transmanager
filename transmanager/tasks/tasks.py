@@ -5,7 +5,6 @@ import django_rq
 from django.contrib.auth.models import User
 
 from django.utils.translation import ugettext_lazy as _
-from django.core.files import File
 from django.core.files.base import ContentFile
 from rq.decorators import job
 
