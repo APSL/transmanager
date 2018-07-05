@@ -3,7 +3,6 @@
 import django_filters
 from django.contrib.contenttypes.models import ContentType
 from django.forms.widgets import Select
-from django_filters import MethodFilter
 from django.utils.translation import gettext_lazy as _
 from hvad.models import TranslatableModel
 
@@ -32,9 +31,12 @@ class TaskFilter(django_filters.FilterSet):
     language = django_filters.ModelChoiceFilter(queryset=TransLanguage.objects.order_by('name'), required=False,
                                                 label=_('Idioma'))
 
-    record_status = MethodFilter(label=_('Estado'), widget=Select(choices=RECORD_STATUS), required=False)
+    record_status = django_filters.CharFilter(
+        label=_('Estado'), widget=Select(choices=RECORD_STATUS), required=False, method='filter_record_status')
 
-    record_types = MethodFilter(label=_('Tipo registro'), widget=Select(choices=RECORDS_TYPES))
+    record_types = django_filters.CharFilter(
+        label=_('Tipo registro'), widget=Select(choices=RECORDS_TYPES), method='filter_record_types'
+    )
 
     object_pk = django_filters.NumberFilter(required=False, label=_('Clave'))
 
@@ -45,7 +47,7 @@ class TaskFilter(django_filters.FilterSet):
         fields = ('usuario', 'language', 'content_type', 'record_types', 'record_status', 'object_pk', 'dates')
 
     @staticmethod
-    def filter_record_status(queryset, value):
+    def filter_record_status(queryset, name, value):
         if value == 'translated':
             return queryset.extra(
                 where=["object_field_value_translation IS NOT NULL AND object_field_value_translation !=''"]
@@ -57,7 +59,7 @@ class TaskFilter(django_filters.FilterSet):
         return queryset
 
     @staticmethod
-    def filter_record_types(queryset, value):
+    def filter_record_types(queryset, name, value):
         if value == 'modified':
             return queryset.extra(
                 where=["to_char(date_creation, 'YY-MM-DD HH24:MI')!=to_char(date_modification, 'YY-MM-DD HH24:MI')"]

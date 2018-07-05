@@ -59,7 +59,7 @@ class TaskListView(AuthenticationMixin, SingleTableView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['filter'] = self.filter
-        data['total'] = self.filter.count()
+        data['total'] = self.filter.qs.count()
         data['words'] = self.filter.qs.aggregate(number=Sum('number_of_words'))
         data['original_value_max_chars'] = TM_ORIGINAL_VALUE_CHARS_NUMBER
         return data
