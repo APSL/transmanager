@@ -10,7 +10,7 @@ django-filters==0.2.1
 django-hvad==1.5.1
 django-rq==0.9.1
 django-yubin==0.2.3
-djangorestframework==3.3.3
+djangorestframework==3.11.2
 docutils==0.12
 imagesize==0.7.1
 Jinja2==2.8
