@@ -3,7 +3,7 @@
 import re
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import FieldDoesNotExist
-from hvad.models import TranslatableModel
+from parler.models import TranslatableModel
 
 
 def get_application_choices():

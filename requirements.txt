@@ -7,7 +7,7 @@ click==6.6
 Django==1.9.6
 django-filter==1.1.0
 django-filters==0.2.1
-django-hvad==1.5.1
+django-parler==1.9.2
 django-rq==0.9.1
 django-yubin==0.2.3
 djangorestframework==3.3.3

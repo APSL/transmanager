@@ -4,7 +4,7 @@ import django_filters
 from django.contrib.contenttypes.models import ContentType
 from django.forms.widgets import Select
 from django.utils.translation import gettext_lazy as _
-from hvad.models import TranslatableModel
+from parler.models import TranslatableModel
 
 from transmanager.models import TransUser, TransLanguage, TransTask, TransModelLanguage
 
