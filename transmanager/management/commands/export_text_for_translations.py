@@ -2,11 +2,10 @@
 from optparse import make_option
 
 import xlsxwriter
-from hvad.utils import get_translation
 from xlsxwriter.utility import xl_rowcol_to_cell
 from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand, CommandError
-from hvad.models import TranslatableModel
+from parler.models import TranslatableModel
 from transmanager.models import TransLanguage
 
 
@@ -60,13 +59,8 @@ class Command(BaseCommand):
             return 'es'
 
     def _get_translated_field_names(self, instance):
-        translated_field_names = set(instance._translated_field_names) - set(self._get_internal_fields())
-        return translated_field_names
+        return instance.translations.model.get_translated_fields()
 
-    @staticmethod
-    def _get_internal_fields():
-        hvad_internal_fields = ['id', 'language_code', 'master', 'master_id']
-        return hvad_internal_fields
 
     def fields_need_translation(self, elem, destination_lang):
         """
@@ -83,7 +77,7 @@ class Command(BaseCommand):
             return fields
 
         # we have the translation, we decide which fields we need to translate. we have to get the translation first
-        translation = get_translation(elem, destination_lang)
+        translation = elem.get_translation(destination_lang)
         result = []
         for field in fields:
             value = getattr(translation, field, '')

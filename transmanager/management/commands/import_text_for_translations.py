@@ -5,7 +5,6 @@ import datetime
 import xlrd
 
 from optparse import make_option
-from hvad.utils import get_translation
 from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand, CommandError
 from transmanager.models import TransLanguage, TransTask
@@ -143,7 +142,7 @@ class Command(BaseCommand):
                 except cls.DoesNotExist:
                     continue
                 try:
-                    trans = get_translation(item, destination_lang)
+                    trans = item.get_translation(destination_lang)
                 except Exception:
                     trans = item.translate(destination_lang)
                 for field, value in row.items():
