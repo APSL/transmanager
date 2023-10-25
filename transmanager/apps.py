@@ -6,8 +6,6 @@ import sys
 from .settings import TM_DISABLED
 from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.contenttypes.models import ContentType
-from parler.models import TranslatableModel
 from parler.signals import pre_translation_save
 from .signals import object_on_pre_save
 
@@ -25,6 +23,8 @@ class TransManagerConfig(AppConfig):
 
     @staticmethod
     def activate_pre_save_signal_for_models():
+        from django.contrib.contenttypes.models import ContentType
+        from parler.models import TranslatableModel
         try:
             # translatable models
             for it in ContentType.objects.all():
