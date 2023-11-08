@@ -105,7 +105,10 @@ class TaskDetailView(AuthenticationMixin, UpdateView):
         model_class = obj_type.model_class()
 
         try:
-            item = model_class.objects.language(self.object.language.code).get(pk=self.object.object_pk)
+            item = model_class.objects.language(self.object.language.code).get(
+                pk=self.object.object_pk,
+                translations__language_code=self.object.language.code
+            )
             initial.update({'object_field_value_translation': getattr(item, self.object.object_field)})
         except ObjectDoesNotExist:
             pass

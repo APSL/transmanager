@@ -44,7 +44,7 @@ class Command(BaseCommand):
             item = ContentType.objects.get_by_natural_key(app_label, model)
             model_class = item.model_class()
             try:
-                model_class.objects.untranslated().use_fallbacks().filter(pk=task.object_pk).get()
+                model_class.objects.filter(pk=task.object_pk).get()
                 return True
             except (AttributeError, ObjectDoesNotExist):
                 return False

@@ -118,15 +118,18 @@ class TransTask(models.Model):
             ct = ContentType.objects.get_by_natural_key(app_label, model)
 
             try:
-                item = ct.model_class().objects.language(self.language.code).get(pk=self.object_pk)
+                item = ct.model_class().objects.language(self.language.code).get(
+                    pk=self.object_pk,
+                    translations__language_code=self.language.code
+                )
             except ObjectDoesNotExist:
                 # we get the shared model (untranslated) and then create the translation
                 try:
-                    item = ct.model_class().objects.untranslated().get(pk=self.object_pk)
+                    item = ct.model_class().objects.get(pk=self.object_pk)
                 except ObjectDoesNotExist:
                     # if we not found the shared model (untranslated) we do nothing
                     return
-                item.translate(self.language.code)
+                item.set_current_language(self.language.code)
             with SignalBlocker(pre_save):
                 setattr(item, self.object_field, self.object_field_value_translation)
                 item.save()
