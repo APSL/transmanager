@@ -45,7 +45,7 @@ class TransLanguage(models.Model):
 
 
 class TransUser(models.Model):
-    user = models.OneToOneField(User, verbose_name=_(u'Usuario'), related_name='translator_user')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name=_(u'Usuario'), related_name='translator_user')
     languages = models.ManyToManyField(TransLanguage, verbose_name=_(u'Idiomas'))
     active = models.BooleanField(default=True, verbose_name=_(u'Activo'))
 
@@ -69,8 +69,8 @@ class TransUser(models.Model):
 class TransTask(models.Model):
 
     # no editables per l'usuari
-    user = models.ForeignKey(TransUser, verbose_name=_(u'Usuario'), related_name='tasks')
-    language = models.ForeignKey(TransLanguage, verbose_name=_(u'Idioma'))
+    user = models.ForeignKey(TransUser, on_delete=models.CASCADE, verbose_name=_(u'Usuario'), related_name='tasks')
+    language = models.ForeignKey(TransLanguage, on_delete=models.CASCADE, verbose_name=_(u'Idioma'))
     object_class = models.CharField(verbose_name=_(u'Clase'), max_length=100, help_text=_(u'Clase del objeto'))
     object_pk = models.IntegerField(verbose_name=_(u'Clave'), help_text=_(u'Clave primária del objeto'))
     date_creation = models.DateTimeField(auto_now_add=True, verbose_name=_(u'Fecha creación'))
@@ -78,7 +78,7 @@ class TransTask(models.Model):
     notified = models.BooleanField(default=False, verbose_name=_(u'Notificada'),
                                    help_text=_(u'Si la tarea ya ha sido notificada o no al usuario'))
     date_notified = models.DateTimeField(blank=True, null=True, verbose_name=_(u'Fecha notificacion'))
-    content_type = models.ForeignKey(ContentType, verbose_name=_('Modelo'), blank=True, null=True)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name=_('Modelo'), blank=True, null=True)
 
     # editables
     object_name = models.CharField(verbose_name=_(u'Nombre objeto'), max_length=200)
@@ -219,7 +219,7 @@ class TransUserExport(models.Model):
     def upload_path(self, filename):
         return 'user-exports/{}/{}'.format(self.user.id, filename)
 
-    user = models.ForeignKey(User, verbose_name=_('user'), related_name='exports')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('user'), related_name='exports')
     file = models.FileField(upload_to=upload_path, blank=True, null=True, max_length=255)
     creation_date = models.DateTimeField(_('creation date'), auto_now_add=True)
     uuid = models.UUIDField(default=uuid.uuid4, verbose_name=_('Unique identifier'), unique=True)
