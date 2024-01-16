@@ -6,7 +6,7 @@ from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db.models import Sum
 from django.views.generic import UpdateView, FormView, TemplateView
 from django.shortcuts import HttpResponseRedirect, HttpResponse
@@ -68,7 +68,7 @@ class TaskListView(AuthenticationMixin, SingleTableView):
 
         if request.GET.get('export', False):
             tasks_ids = self.get_queryset().values_list('id', flat=True)
-            export_translations_to_excel.delay(tasks_ids, self.request.user.id)
+            export_translations_to_excel.delay(tasks_ids, self.request.user.id, self.request.is_secure())
             messages.info(
                 self.request,
                 _('Iniciado el proceso de exportación de traducciones.\nSe notificará al usuario una vez concluído')
@@ -187,16 +187,17 @@ class ImportExportNotificationView(TemplatedHTMLEmailMessageView):
     body_template_name = 'notification/import_export_notification_body.txt'
     html_body_template_name = 'notification/import_export_notification_body.html'
 
-    def __init__(self, user, errors=None, user_export=None, *args, **kwargs):
+    def __init__(self, user, errors=None, user_export=None, is_secure=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.user = user
         self.user_export = user_export
         self.errors = errors
+        self.is_secure = is_secure
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         site = Site.objects.get_current()
-        protocol = 'https' if self.request.is_secure() else 'http'
+        protocol = 'https' if self.is_secure else 'http'
         context['domain_url'] = '{}://{}'.format(protocol, site.domain)
         context['user'] = self.user
         context['user_export'] = self.user_export

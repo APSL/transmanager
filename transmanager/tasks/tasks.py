@@ -54,7 +54,7 @@ def import_translations_from_excel(file, user_id):
 
 
 @job('default', connection=django_rq.get_connection('default'))
-def export_translations_to_excel(task_ids, user_id):
+def export_translations_to_excel(task_ids, user_id, is_secure):
     from ..views import ImportExportNotificationView
     from ..models import TransUserExport
     user = User.objects.get(pk=user_id)
@@ -67,7 +67,7 @@ def export_translations_to_excel(task_ids, user_id):
     else:
         user_export = None
         errors = [_('No se ha podido generar el archivo')]
-    ImportExportNotificationView(user=user, user_export=user_export, errors=errors).send(to=(user.email,))
+    ImportExportNotificationView(user=user, user_export=user_export, errors=errors, is_secure=is_secure).send(to=(user.email,))
 
 
 
