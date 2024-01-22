@@ -10,6 +10,7 @@ Then you've to append :code:`transmanager` and :code:`django_tables2` to :code:`
     INSTALLED_APPS = (
         ...
         'transmanager',
+        'django_filters',
         'django_tables2',
         'haystack',
     )
