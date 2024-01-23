@@ -41,25 +41,11 @@ class Command(BaseCommand):
 
     help = "Command for the import translations duty"
 
-    option_list = BaseCommand.option_list + (
-        make_option(
-            "-a",
-            "--app",
-            dest="app_label",
-            help="specify app name. E.g: Transfers, Golf, ...",
-            metavar="APP"
-        ),
-    )
-
-    option_list = option_list + (
-        make_option(
-            "-l",
-            "--lang",
-            dest="destination_lang",
-            help="specify destination lang",
-            metavar="DESTINATION_LANG"
-        ),
-    )
+    def add_arguments(self, parser):
+        parser.add_argument('-a', '--app', dest='app_label',
+                            help='specify app name. E.g: Transfers, Golf, ...', metavar='APP')
+        parser.add_argument('-l', '--lang', dest='destination_lang',
+                            help='specify destination lang', metavar='DESTINATION_LANG')
 
     @staticmethod
     def _get_main_language():
@@ -141,15 +127,12 @@ class Command(BaseCommand):
                     item = cls.objects.language(main_lang).get(pk=row['id'])
                 except cls.DoesNotExist:
                     continue
-                try:
-                    trans = item.get_translation(destination_lang)
-                except Exception:
-                    trans = item.translate(destination_lang)
+                item.set_current_language(destination_lang)
                 for field, value in row.items():
                     if field == 'id':
                         continue
-                    setattr(trans, field, value)
-                trans.save()
+                    setattr(item, field, value)
+                item.save()
 
                 ############################
                 # update translation tasks #

@@ -4,7 +4,7 @@ from optparse import make_option
 import xlsxwriter
 from xlsxwriter.utility import xl_rowcol_to_cell
 from django.contrib.contenttypes.models import ContentType
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand, CommandError, CommandParser
 from parler.models import TranslatableModel
 from transmanager.models import TransLanguage
 
@@ -25,26 +25,13 @@ class Command(BaseCommand):
     """
 
     help = "Command for the export text duty"
+    
+    def add_arguments(self, parser):
+        parser.add_argument('-a', '--app', dest='app_label',
+                            help='specify app name. E.g: Transfers, Golf, ...', metavar='APP')
+        parser.add_argument('-l', '--lang', dest='destination_lang',
+                            help='specify destination lang', metavar='DESTINATION_LANG')
 
-    option_list = BaseCommand.option_list + (
-        make_option(
-            "-a",
-            "--app",
-            dest="app_label",
-            help="specify app name. E.g: Transfers, Golf, ...",
-            metavar="APP"
-        ),
-    )
-
-    option_list = option_list + (
-        make_option(
-            "-l",
-            "--lang",
-            dest="destination_lang",
-            help="specify destination lang",
-            metavar="DESTINATION_LANG"
-        ),
-    )
 
     @staticmethod
     def _get_main_language():
@@ -178,7 +165,7 @@ class Command(BaseCommand):
 
                 # if all the fields are already translated in the destination language then avoid this tuple
                 fields_to_translate = self.fields_need_translation(elem, destination_lang)
-                if len(fields_to_translate) == 0:
+                if len(fields_to_translate) == 0 or not elem.has_translation():
                     continue
 
                 # at least there is one item
