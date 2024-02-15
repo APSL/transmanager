@@ -19,7 +19,7 @@ Quick start
 
 2. Include the transmanager URLconf in your project urls.py like this::
 
-    url(r'^transmanager', include('transmanager.urls')),
+    path('transmanager', include('transmanager.urls')),
 
 3. Run `python manage.py migrate transmanager` to create the transmanager models.
 
