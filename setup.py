@@ -49,7 +49,7 @@ setup(
     install_requires=[
         'django',
         'django-filter',
-        'django-hvad',
+        'django-parler',
         'django-rq',
         'xlsxwriter',
         'xlrd',

@@ -2,7 +2,7 @@
 TransManager
 ============
 
-TransManager is a simple django app to deal with the translations tasks of the models content based on django-hvad.
+TransManager is a simple django app to deal with the translations tasks of the models content based on django-parler.
 It's not for static files.
 
 
@@ -19,7 +19,7 @@ Quick start
 
 2. Include the transmanager URLconf in your project urls.py like this::
 
-    url(r'^transmanager', include('transmanager.urls')),
+    path('transmanager', include('transmanager.urls')),
 
 3. Run `python manage.py migrate transmanager` to create the transmanager models.
 

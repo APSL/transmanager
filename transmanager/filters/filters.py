@@ -4,7 +4,7 @@ import django_filters
 from django.contrib.contenttypes.models import ContentType
 from django.forms.widgets import Select
 from django.utils.translation import gettext_lazy as _
-from hvad.models import TranslatableModel
+from parler.models import TranslatableModel
 
 from transmanager.models import TransUser, TransLanguage, TransTask, TransModelLanguage
 
@@ -24,7 +24,7 @@ class TaskFilter(django_filters.FilterSet):
     )
 
     usuario = django_filters.ModelChoiceFilter(queryset=TransUser.objects.all(), required=False,
-                                               label=_('Usuario'), name='user')
+                                               label=_('Usuario'), field_name='user')
 
     content_type = django_filters.ChoiceFilter(choices=(), required=False, label=_('Clase'))
 
@@ -40,7 +40,7 @@ class TaskFilter(django_filters.FilterSet):
 
     object_pk = django_filters.NumberFilter(required=False, label=_('Clave'))
 
-    dates = django_filters.DateFromToRangeFilter(label=_('Rango de fechas'), required=False, name='date_modification')
+    dates = django_filters.DateFromToRangeFilter(label=_('Rango de fechas'), required=False, field_name='date_modification')
 
     class Meta:
         model = TransTask
@@ -77,8 +77,8 @@ class TaskFilter(django_filters.FilterSet):
         obj_class, obj_field = value.split('__')
         return queryset.filter(object_class=obj_class, object_field=obj_field)
 
-    def __init__(self, data=None, queryset=None, prefix=None, strict=None, user=None):
-        super().__init__(data, queryset, prefix, strict)
+    def __init__(self, data=None, queryset=None, *, request=None, prefix=None, user= None):
+        super().__init__(data, queryset, request=request, prefix=prefix)
         self.filters['content_type'].extra['choices'] = self.get_choices_for_models()
 
         if not user:

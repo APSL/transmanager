@@ -8,8 +8,7 @@ from django.contrib.admin.utils import NestedObjects
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from hvad.models import BaseTranslationModel, TranslatableModel
-from hvad.utils import get_translation
+from parler.models import TranslatableModel
 
 from .models import TransTask, TransUser, TransLanguage, TransModelLanguage, TransApplicationLanguage, TransItemLanguage
 from .settings import TM_DEFAULT_LANGUAGE_CODE, TM_DEFAULT_ENABLED_ATTRIBUTE_NAME
@@ -203,8 +202,7 @@ class Manager(object):
         in order to detect if it has suffered changes or not
         :return:
         """
-        # if not isinstance(self.instance, TranslatableModel):
-        if not issubclass(self.sender, BaseTranslationModel):
+        if not issubclass(self.sender, TranslatableModel):
             return False
         return True
 
@@ -250,8 +248,7 @@ class Manager(object):
 
         :return:
         """
-        hvad_internal_fields = ['id', 'language_code', 'master', 'master_id', 'master_id']
-        translated_field_names = set(model_instance._translated_field_names) - set(hvad_internal_fields)
+        translated_field_names = model_instance.translations.model.get_translated_fields()
         return translated_field_names
 
     def get_languages(self, include_main=False):
@@ -639,7 +636,7 @@ class Manager(object):
         :return:
         """
         try:
-            translation = get_translation(instance, lang)
+            translation = instance.get_translation(lang)
         except (AttributeError, ObjectDoesNotExist):
             translation = None
         return translation
@@ -740,7 +737,7 @@ class Manager(object):
     @staticmethod
     def exists_destination_lang_value(item, field, lang):
         try:
-            dest_trans = get_translation(item, lang)
+            dest_trans = item.get_translation(lang)
             dest_object_field_value = getattr(dest_trans, field)
             if dest_object_field_value and dest_object_field_value.strip() != '':
                 return True

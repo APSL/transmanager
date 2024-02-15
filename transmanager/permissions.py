@@ -3,7 +3,7 @@
 import logging
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 
 logger = logging.getLogger(__name__)
 
