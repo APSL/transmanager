@@ -2,11 +2,10 @@
 from optparse import make_option
 
 import xlsxwriter
-from hvad.utils import get_translation
 from xlsxwriter.utility import xl_rowcol_to_cell
 from django.contrib.contenttypes.models import ContentType
-from django.core.management.base import BaseCommand, CommandError
-from hvad.models import TranslatableModel
+from django.core.management.base import BaseCommand, CommandError, CommandParser
+from parler.models import TranslatableModel
 from transmanager.models import TransLanguage
 
 
@@ -26,26 +25,13 @@ class Command(BaseCommand):
     """
 
     help = "Command for the export text duty"
+    
+    def add_arguments(self, parser):
+        parser.add_argument('-a', '--app', dest='app_label',
+                            help='specify app name. E.g: Transfers, Golf, ...', metavar='APP')
+        parser.add_argument('-l', '--lang', dest='destination_lang',
+                            help='specify destination lang', metavar='DESTINATION_LANG')
 
-    option_list = BaseCommand.option_list + (
-        make_option(
-            "-a",
-            "--app",
-            dest="app_label",
-            help="specify app name. E.g: Transfers, Golf, ...",
-            metavar="APP"
-        ),
-    )
-
-    option_list = option_list + (
-        make_option(
-            "-l",
-            "--lang",
-            dest="destination_lang",
-            help="specify destination lang",
-            metavar="DESTINATION_LANG"
-        ),
-    )
 
     @staticmethod
     def _get_main_language():
@@ -60,13 +46,8 @@ class Command(BaseCommand):
             return 'es'
 
     def _get_translated_field_names(self, instance):
-        translated_field_names = set(instance._translated_field_names) - set(self._get_internal_fields())
-        return translated_field_names
+        return instance.translations.model.get_translated_fields()
 
-    @staticmethod
-    def _get_internal_fields():
-        hvad_internal_fields = ['id', 'language_code', 'master', 'master_id']
-        return hvad_internal_fields
 
     def fields_need_translation(self, elem, destination_lang):
         """
@@ -83,7 +64,7 @@ class Command(BaseCommand):
             return fields
 
         # we have the translation, we decide which fields we need to translate. we have to get the translation first
-        translation = get_translation(elem, destination_lang)
+        translation = elem.get_translation(destination_lang)
         result = []
         for field in fields:
             value = getattr(translation, field, '')
@@ -184,7 +165,7 @@ class Command(BaseCommand):
 
                 # if all the fields are already translated in the destination language then avoid this tuple
                 fields_to_translate = self.fields_need_translation(elem, destination_lang)
-                if len(fields_to_translate) == 0:
+                if len(fields_to_translate) == 0 or not elem.has_translation():
                     continue
 
                 # at least there is one item

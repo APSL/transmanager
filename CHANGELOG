@@ -1,3 +1,9 @@
 0.1 (2016-06-01)
 ----------------
 * Initial release.
+
+0.4 (2024-01-15)
+----------------
+Add support django 3.2
+Remove django-hvad requirement
+Add django-parler requirement

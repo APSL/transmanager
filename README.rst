@@ -2,7 +2,7 @@
 TransManager
 ============
 
-TransManager is a simple django app to deal with the translations tasks of the models content based on django-hvad.
+TransManager is a simple django app to deal with the translations tasks of the models content based on django-parler.
 It's not for static files.
 
 

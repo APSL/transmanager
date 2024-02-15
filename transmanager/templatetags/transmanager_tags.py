@@ -71,7 +71,7 @@ def get_main_menu():
     return render_to_string('menu/main_menu.html', {'menu': menu})
 
 
-@register.assignment_tag()
+@register.simple_tag()
 def get_logo_url():
     return '{}{}'.format(settings.STATIC_URL, TM_BRAND_LOGO_URL)
 
